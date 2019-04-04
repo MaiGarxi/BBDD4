@@ -1,10 +1,8 @@
 
 package bbdd;
 
-import java.beans.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import javax.swing.JOptionPane;
 
 public class Conectar {
 
