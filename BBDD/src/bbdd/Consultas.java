@@ -19,7 +19,7 @@ public class Consultas {
         ArrayList<String> destinos=new ArrayList();
           //SELECT         
         try{
-            String query="SELECT nombre, localidad from hotel order by nombre";
+            String query="SELECT DISTINCT Localidad from hotel order by Localidad ASC";
             Statement sentencia = reg.createStatement(); 
             ResultSet resultado=sentencia.executeQuery(query);            
             }  
