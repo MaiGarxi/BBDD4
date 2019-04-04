@@ -30,4 +30,22 @@ public class Consultas {
         }       
            return destinos;
     }   
+    
+        public ArrayList<String> ConsultaHoteles_Nombre(String Localidad)
+    {
+        ArrayList<String> NombreHoteles=new ArrayList();
+          //SELECT         
+        try{
+            String query="SELECT Nombre from hotel where Localidad = '"+Localidad+"'";
+            Statement sentencia = reg.createStatement(); 
+            ResultSet resultado=sentencia.executeQuery(query);            
+            }  
+
+        catch (SQLException ex) 
+        {
+            System.err.println("Hubo un Error ");
+        }       
+           return NombreHoteles;
+    } 
+        
 }
