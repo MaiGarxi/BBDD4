@@ -15,23 +15,27 @@ public class Consultas {
     //DEBES CREAR EL METODO DEL MISMO TIPO QUE LA CLASE DEL OBJETO QUE DEBES DEVOLVER//
         
     public ArrayList<String> ConsultaDestino()
-    {
-        ArrayList<String> destinos=new ArrayList();
+    {     
           //SELECT         
         try{
+            ArrayList<String> destinos=new ArrayList();
             String query="SELECT DISTINCT Localidad from hotel order by Localidad ASC";
             Statement sentencia = reg.createStatement(); 
-            ResultSet resultado=sentencia.executeQuery(query);            
-            }  
+            ResultSet resultado=sentencia.executeQuery(query);     
+            while (resultado.next()){                
+                destinos.add(resultado.getString("Localidad"));                 
+            }
+            return destinos;
+        }  
 
         catch (SQLException ex) 
         {
             System.err.println("Hubo un Error ");
         }       
-           return destinos;
+          return null; 
     }   
     
-        public ArrayList<String> ConsultaHoteles_Nombre(String Localidad)
+    public ArrayList<String> ConsultaHoteles_Nombre(String Localidad)
     {
         ArrayList<String> NombreHoteles=new ArrayList();
           //SELECT         
