@@ -60,7 +60,7 @@ public class Consultas {
     {
             try {  
             Statement st = reg.createStatement(); 
-            st.executeUpdate("INSERT INTO `reserva`(`Cod_reserva`, `Precio`, `Cod_hotel`) VALUES ('"+Cod_reserva+"','"+Precio+"','"+Cod_hotel+"'))"); 
+            st.executeUpdate("INSERT INTO reserva(Cod_reserva,Precio,Cod_hotel) VALUES ('"+Cod_reserva+"','"+Precio+"','"+Cod_hotel+"')"); 
             
         } catch (Exception e) { 
             System.err.println("Got an exception! "); 
