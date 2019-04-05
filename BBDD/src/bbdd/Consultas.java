@@ -73,7 +73,7 @@ public class Consultas {
           //SELECT         
         try{
             ArrayList<String> NombreHoteles=new ArrayList();
-            String query="SELECT cod_hote from hotel where Nombre = '"+Localidad+"'";
+            String query="SELECT cod_hotel from hotel where Nombre = '"+Localidad+"'";
             Statement sentencia = reg.createStatement(); 
             ResultSet resultado=sentencia.executeQuery(query); 
             while (resultado.next()){                
