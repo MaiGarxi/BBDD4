@@ -4,6 +4,7 @@ package bbdd;
 import java.beans.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 public class Conectar {
@@ -20,6 +21,13 @@ public class Conectar {
         catch(Exception e){
           System.out.println(e.getMessage());}
                        return conectar;
+    }
+    
+    public ArrayList<String> consultar_destinos()
+    {
+    ArrayList<String> Destinos= new ArrayList<String>();
+    
+    return Destinos;
     }
 }
 
