@@ -68,16 +68,19 @@ public class Consultas {
         } 
     }
     
-    public ArrayList<String> hotel_para_reservar(String Localidad)
+
+    public ArrayList<String> hotel_para_reservar(String Nombre)
     {
           //SELECT         
         try{
             ArrayList<String> NombreHoteles=new ArrayList();
-            String query="SELECT cod_hotel from hotel where Nombre = '"+Localidad+"'";
+
+            String query="SELECT Cod_hotel from hotel where Nombre = '"+Nombre+"'";
+
             Statement sentencia = reg.createStatement(); 
             ResultSet resultado=sentencia.executeQuery(query); 
             while (resultado.next()){                
-                NombreHoteles.add(resultado.getString("Nombre"));                 
+                NombreHoteles.add(resultado.getString("Cod_hotel"));                 
             }
             return NombreHoteles;
             }  
