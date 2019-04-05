@@ -66,6 +66,27 @@ public class Consultas {
             System.err.println("Got an exception! "); 
             System.err.println(e.getMessage()); 
         } 
+    }
+    
+        public ArrayList<String> hotel_para_reservar(String Localidad)
+    {
+          //SELECT         
+        try{
+            ArrayList<String> NombreHoteles=new ArrayList();
+            String query="SELECT cod_hote from hotel where Nombre = '"+Localidad+"'";
+            Statement sentencia = reg.createStatement(); 
+            ResultSet resultado=sentencia.executeQuery(query); 
+            while (resultado.next()){                
+                NombreHoteles.add(resultado.getString("Nombre"));                 
+            }
+            return NombreHoteles;
+            }  
+
+        catch (SQLException ex) 
+        {
+            System.err.println("Hubo un Error ");
+        }       
+           return null;
     } 
         
 }
