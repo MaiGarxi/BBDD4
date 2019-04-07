@@ -10,13 +10,11 @@ import java.util.ArrayList;
 
 public class Consultas {
     
-    Conectar con =new Conectar(); //SOLO ESTO AL INSTANCIAR, ES NECESARIA PARA HACER LA CONEXIÒN//
-    Connection reg=con.conexion();// SOLO ESTO AL INSTACIAR, ES NECESARIA PARA HACER LA CONEXIÒN//
-    //DEBES CREAR EL METODO DEL MISMO TIPO QUE LA CLASE DEL OBJETO QUE DEBES DEVOLVER//
+    Conectar con =new Conectar(); 
+    Connection reg=con.conexion();
         
     public ArrayList<String> ConsultaDestino()
-    {     
-          //SELECT         
+    {             
         try{
             ArrayList<String> destinos=new ArrayList();
             String query="SELECT DISTINCT Localidad from hotel order by Localidad ASC";
@@ -36,45 +34,40 @@ public class Consultas {
     }   
     
     public ArrayList<String> ConsultaHoteles_Nombre(String Localidad)
-    {
-          //SELECT         
+    {      
         try{
             ArrayList<String> NombreHoteles=new ArrayList();
+            
             String query="SELECT Nombre from hotel where Localidad = '"+Localidad+"'";
+            
             Statement sentencia = reg.createStatement(); 
             ResultSet resultado=sentencia.executeQuery(query); 
             while (resultado.next()){                
                 NombreHoteles.add(resultado.getString("Nombre"));                 
             }
             return NombreHoteles;
-            }  
-
-        catch (SQLException ex) 
-        {
-            System.err.println("Hubo un Error ");
-        }       
-           return null;
+        }   catch (SQLException ex) 
+            {
+                System.err.println("Hubo un Error");
+            }       
+        return null;
     } 
     
     public void InsertarReserva(double Precio, int Cod_hotel)
     {
-            try {  
+        try {  
             Statement st = reg.createStatement(); 
-
-
-            st.executeUpdate("INSERT INTO reserva(Precio, Cod_hotel) VALUES ('"+Precio+"','"+Cod_hotel+"')"); 
-
             
-        } catch (Exception e) { 
-            System.err.println("Got an exception! "); 
-            System.err.println(e.getMessage()); 
-        } 
-    }
-    
+            st.executeUpdate("INSERT INTO reserva(Precio, Cod_hotel) VALUES ('"+Precio+"','"+Cod_hotel+"')");         
+        
+        }   catch (Exception e) { 
+                System.err.println("Hubo un Error"); 
+                System.err.println(e.getMessage()); 
+            } 
+    }   
 
     public ArrayList<String> hotel_para_reservar(String Nombre)
-    {
-          //SELECT         
+    {         
         try{
             ArrayList<String> NombreHoteles=new ArrayList();
 
@@ -86,13 +79,52 @@ public class Consultas {
                 NombreHoteles.add(resultado.getString("Cod_hotel"));                 
             }
             return NombreHoteles;
-            }  
-
-        catch (SQLException ex) 
-        {
-            System.err.println("Hubo un Error ");
-        }       
-           return null;
+        }   catch (SQLException ex) 
+            {
+                System.err.println("Hubo un Error ");
+            }       
+        return null;
     } 
-       
+    
+    public void Usuario(String us,String pass)
+    {
+        try 
+        {
+            String query="select DNI, Contraseña from cliente where DNI='"+us+"' AND contraseña='"+pass+"'";
+            Statement sentencia= reg.createStatement();
+            ResultSet resultado=sentencia.executeQuery(query);
+                         
+            while (resultado.next())
+            {
+                String dni=resultado.getString("DNI");
+                String contrasena=resultado.getString("contraseña");
+            }                            
+        }catch (Exception e)
+            {
+                System.err.println("Hubo un Error ");
+                System.err.println(e.getMessage());
+            }
+    }
+    
+    public  void BorrarCliente(String us,String pass)
+    {       
+        try {               
+            Statement st = reg.createStatement();
+            st.executeUpdate("DELETE from cliente where DNI='"+us+"' AND contraseña='"+pass+"'");                       
+        } catch (Exception e) { 
+            System.err.println(e.getMessage()); 
+        }       
+    }
+        
+    public void ActualizarCliente( String dni,String nombre,String apellidos, String fecha, String sexo, String contraseña)
+    {
+        try {             
+            Statement st = reg.createStatement();
+            st.executeUpdate("UPDATE `cliente` SET `Nombre`='"+nombre+"',`Apellidos`='"+apellidos+"',`Fecha_nac`='"+fecha+"',`Sexo`='"+sexo+"',`Contraseña`='"+contraseña+"' WHERE DNI='"+dni+"'");           
+            reg.close(); 
+            
+        } catch (Exception e) { 
+            System.err.println(e.getMessage()); 
+        }        
+    }       
 }
