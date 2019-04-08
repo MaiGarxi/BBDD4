@@ -21,12 +21,7 @@ public class Conectar {
                        return conectar;
     }
     
-    public ArrayList<String> consultar_destinos()
-    {
-    ArrayList<String> Destinos= new ArrayList<String>();
-    
-    return Destinos;
-    }
+
 }
 
     
