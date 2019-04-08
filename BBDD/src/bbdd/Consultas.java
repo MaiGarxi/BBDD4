@@ -1,12 +1,9 @@
-
 package bbdd;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-
 
 public class Consultas {
     
@@ -41,8 +38,7 @@ public class Consultas {
             {
                 System.err.println("Hubo un Error");
                 return null;
-            }       
-        
+            }               
     } 
     
     public void InsertarReserva(double Precio, int Cod_hotel)
@@ -68,7 +64,7 @@ public class Consultas {
         catch (SQLException ex) 
             {
                 System.err.println("Hubo un Error ");
-                  return null;
+                return null;
             }          
     } 
     
