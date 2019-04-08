@@ -3,8 +3,6 @@ package bbdd;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.util.ArrayList;
-import javax.swing.JOptionPane;
 
 public class Conectar {
 
@@ -20,7 +18,6 @@ public class Conectar {
           System.out.println(e.getMessage());}
                        return conectar;
     }
-    
 
 }
 
