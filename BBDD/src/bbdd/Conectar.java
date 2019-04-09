@@ -3,6 +3,7 @@ package bbdd;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class Conectar {
 
@@ -14,11 +15,16 @@ public class Conectar {
               conectar=DriverManager.getConnection("jdbc:mysql://localhost/reto4","root","");
                 System.out.println("Conexion establecida");
                 }
-        catch(Exception e){
-          System.out.println(e.getMessage());}
-                       return conectar;
+        
+ 	catch (ClassNotFoundException e1) {
+                //Error si no puedo leer el driver 
+		System.out.println("ERROR:No encuentro el driver de la BD: "+e1.getMessage());
+	}
+	catch (SQLException e2) {
+                //Error SQL: login/passwd mal
+		System.out.println("ERROR:Fallo en SQL: "+e2.getMessage());
+	}
+        return conectar;
     }
-
 }
-
     
