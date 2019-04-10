@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
 
 public class Consultas {
     
@@ -68,23 +69,21 @@ public class Consultas {
             }          
     } 
     
-    public void Usuario(String us,String pass)
+    public  ResultSet ObtenerUsuario(String us,String pass) 
     {
         try 
         {
-            String query="select DNI, Contraseña from cliente where DNI='"+us+"' AND contraseña='"+pass+"'";
+            String query="select * from usuario where DNI='"+us+"' AND Contraseña='"+pass+"'";
             Statement sentencia= reg.createStatement();
-            ResultSet resultado=sentencia.executeQuery(query);            
-            while (resultado.next())
-            {
-                String dni=resultado.getString("DNI");
-                String contrasena=resultado.getString("contraseña");
-            }                            
-        }catch (Exception e)
-            {
-                System.err.println("Hubo un Error ");
-                System.err.println(e.getMessage());
-            }
+            ResultSet resultado=sentencia.executeQuery(query);
+            return resultado;                         
+        }catch (Exception e) 
+        {
+            JOptionPane.showMessageDialog(null,"error"); 
+            System.err.println("Hubo un Error ");
+            System.err.println(e.getMessage());
+        }
+       return null;
     }
     
     public  void BorrarCliente(String us,String pass)
