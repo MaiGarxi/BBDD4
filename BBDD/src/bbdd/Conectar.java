@@ -8,9 +8,9 @@ import java.sql.SQLException;
 public class Conectar {
 
     Connection conectar=null;
-
+    
     public Connection conexion(){
-        
+            
         try{
             Class.forName("com.mysql.jdbc.Driver");
             conectar=DriverManager.getConnection("jdbc:mysql://localhost/reto4","root","");
