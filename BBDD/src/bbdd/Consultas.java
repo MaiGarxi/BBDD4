@@ -106,5 +106,16 @@ public class Consultas {
         } catch (Exception e) { 
             System.err.println(e.getMessage()); 
         }        
-    }       
+    }  
+    
+    public void InsertarCliente( String dni,String nombre,String apellidos,String contraseña, String sexo, String fecha)
+    {
+        try {             
+            Statement st = reg.createStatement();
+            st.executeUpdate("INSERT INTO cliente (DNI, Nombre, Apellidos, Fecha_nac, Sexo, Contraseña) VALUES ('"+dni+"', '"+nombre+"', '"+apellidos+"','"+fecha+"','"+sexo+"', '"+contraseña+"')");             
+        } catch (Exception e) { 
+            System.err.println("cannot insert!"+fecha); 
+            System.err.println(e.getMessage()); 
+        } 
+    }
 }
