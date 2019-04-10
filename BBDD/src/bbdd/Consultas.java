@@ -8,16 +8,29 @@ import javax.swing.JOptionPane;
 
 public class Consultas {
     
-    Conectar con =new Conectar(); 
-    Connection reg=con.conexion();
+public static Conectar conex;
+public static Connection reg;
+    public Consultas() {
+        Conectar conexi=new Conectar();
+        conex=conexi.Devolver();
+        reg=conex.conexion();
+    }
+
         
     public  ResultSet  ConsultaDestino()
     {             
         try{
-            String query="SELECT DISTINCT Localidad from hotel order by Localidad ASC";
+            if(reg.isClosed())
+            {
+                 System.out.println("Sesion terminada");
+         return null;
+            }
+            else{
+              String query="SELECT DISTINCT Localidad from hotel order by Localidad ASC";
             Statement sentencia = reg.createStatement(); 
             ResultSet resultado=sentencia.executeQuery(query);     
             return resultado;
+            }
         }  
 
         catch (SQLException ex) 
@@ -25,16 +38,26 @@ public class Consultas {
             System.err.println("Hubo un Error ");
             return null; 
         }       
+
           
     }   
     
     public ResultSet ConsultaHoteles_Nombre(String Localidad)
     {      
         try{
-            String query="SELECT Nombre from hotel where Localidad = '"+Localidad+"'";
+            if(reg.isClosed())
+            {
+         System.out.println("Sesion terminada");
+         return null;
+            }
+            else{
+                 String query="SELECT Nombre from hotel where Localidad = '"+Localidad+"'";
             Statement sentencia = reg.createStatement(); 
             ResultSet resultado=sentencia.executeQuery(query); 
             return resultado;
+            }
+            
+       
         }   catch (SQLException ex) 
             {
                 System.err.println("Hubo un Error");
@@ -45,8 +68,16 @@ public class Consultas {
     public void InsertarReserva(double Precio, int Cod_hotel)
     {
         try {  
-            Statement st = reg.createStatement(); 
-            st.executeUpdate("INSERT INTO reserva(Precio, Cod_hotel) VALUES ('"+Precio+"','"+Cod_hotel+"')");         
+                        if(reg.isClosed())
+            {
+         System.out.println("Sesion terminada");
+         
+            }
+           else {
+                          Statement st = reg.createStatement(); 
+            st.executeUpdate("INSERT INTO reserva(Precio, Cod_hotel) VALUES ('"+Precio+"','"+Cod_hotel+"')");      
+                     }
+             
         
         }   catch (Exception e) { 
                 System.err.println("Hubo un Error"); 
@@ -57,10 +88,18 @@ public class Consultas {
     public  ResultSet hotel_para_reservar(String Nombre)
     {         
         try{
-            String query="SELECT Cod_hotel from hotel where Nombre = '"+Nombre+"'";
+                                    if(reg.isClosed())
+            {
+         System.out.println("Sesion terminada");
+         return null;
+            }
+                                    else{
+                                            String query="SELECT Cod_hotel from hotel where Nombre = '"+Nombre+"'";
             Statement sentencia = reg.createStatement(); 
             ResultSet resultado=sentencia.executeQuery(query); 
             return resultado;
+                                    }
+    
             } 
         catch (SQLException ex) 
             {
@@ -73,10 +112,18 @@ public class Consultas {
     {
         try 
         {
-            String query="select * from usuario where DNI='"+us+"' AND Contraseña='"+pass+"'";
+                                     if(reg.isClosed())
+            {
+         System.out.println("Sesion terminada");
+         return null;
+            }
+                                     else{
+                                              String query="select * from usuario where DNI='"+us+"' AND Contraseña='"+pass+"'";
             Statement sentencia= reg.createStatement();
             ResultSet resultado=sentencia.executeQuery(query);
-            return resultado;                         
+            return resultado;   
+                                     }
+                         
         }catch (Exception e) 
         {
             JOptionPane.showMessageDialog(null,"error"); 
@@ -89,8 +136,15 @@ public class Consultas {
     public  void BorrarCliente(String us,String pass)
     {       
         try {               
-            Statement st = reg.createStatement();
-            st.executeUpdate("DELETE from cliente where DNI='"+us+"' AND contraseña='"+pass+"'");                       
+                                         if(reg.isClosed())
+            {
+         System.out.println("Sesion terminada");
+        
+            }else{
+                                      Statement st = reg.createStatement();
+            st.executeUpdate("DELETE from cliente where DNI='"+us+"' AND contraseña='"+pass+"'");                 
+                                         }
+                     
         } catch (Exception e) { 
             System.err.println(e.getMessage()); 
         }       
@@ -98,10 +152,17 @@ public class Consultas {
         
     public void ActualizarCliente( String dni,String nombre,String apellidos, String fecha, String sexo, String contraseña)
     {
-        try {             
+        try {          
+                   if(reg.isClosed())
+            {
+         System.out.println("Sesion terminada");
+        
+            }else{
             Statement st = reg.createStatement();
             st.executeUpdate("UPDATE `cliente` SET `Nombre`='"+nombre+"',`Apellidos`='"+apellidos+"',`Fecha_nac`='"+fecha+"',`Sexo`='"+sexo+"',`Contraseña`='"+contraseña+"' WHERE DNI='"+dni+"'");           
-            reg.close(); 
+          
+                   }
+
             
         } catch (Exception e) { 
             System.err.println(e.getMessage()); 

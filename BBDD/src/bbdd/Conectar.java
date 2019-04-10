@@ -7,8 +7,16 @@ import java.sql.SQLException;
 
 public class Conectar {
 
-    Connection conectar=null;
+    public Conectar Devolver() {
+
+                Conectar conex=new Conectar();
+                return conex;
+    }
     
+  
+
+    Connection conectar=null;
+   
     public Connection conexion(){
             
         try{
