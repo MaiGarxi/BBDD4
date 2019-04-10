@@ -86,21 +86,21 @@ public class Consultas {
        return null;
     }
     
-    public  void BorrarCliente(String us,String pass)
+    public  void BorrarUsuario(String us,String pass)
     {       
         try {               
             Statement st = reg.createStatement();
-            st.executeUpdate("DELETE from cliente where DNI='"+us+"' AND contraseña='"+pass+"'");                       
+            st.executeUpdate("DELETE from usuario where DNI='"+us+"' AND contraseña='"+pass+"'");                       
         } catch (Exception e) { 
             System.err.println(e.getMessage()); 
         }       
     }
         
-    public void ActualizarCliente( String dni,String nombre,String apellidos, String fecha, String sexo, String contraseña)
+    public void ActualizarUsuario( String dni,String nombre,String apellidos, String fecha, String sexo, String contraseña)
     {
         try {             
             Statement st = reg.createStatement();
-            st.executeUpdate("UPDATE `cliente` SET `Nombre`='"+nombre+"',`Apellidos`='"+apellidos+"',`Fecha_nac`='"+fecha+"',`Sexo`='"+sexo+"',`Contraseña`='"+contraseña+"' WHERE DNI='"+dni+"'");           
+            st.executeUpdate("UPDATE `usuario` SET `Nombre`='"+nombre+"',`Apellidos`='"+apellidos+"',`Fecha_nac`='"+fecha+"',`Sexo`='"+sexo+"',`Contraseña`='"+contraseña+"' WHERE DNI='"+dni+"'");           
             reg.close(); 
             
         } catch (Exception e) { 
@@ -112,7 +112,7 @@ public class Consultas {
     {
         try {             
             Statement st = reg.createStatement();
-            st.executeUpdate("INSERT INTO cliente (DNI, Nombre, Apellidos, Fecha_nac, Sexo, Contraseña) VALUES ('"+dni+"', '"+nombre+"', '"+apellidos+"','"+fecha+"','"+sexo+"', '"+contraseña+"')");             
+            st.executeUpdate("INSERT INTO usuario (DNI, Nombre, Apellidos, Fecha_nac, Sexo, Contraseña) VALUES ('"+dni+"', '"+nombre+"', '"+apellidos+"','"+fecha+"','"+sexo+"', '"+contraseña+"')");             
         } catch (Exception e) { 
             System.err.println("cannot insert!"+fecha); 
             System.err.println(e.getMessage()); 
