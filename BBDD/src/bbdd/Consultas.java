@@ -137,6 +137,7 @@ public static Connection reg;
     {       
         try {               
 
+
                                          if(reg.isClosed())
             {
          System.out.println("Sesion terminada");
@@ -146,6 +147,7 @@ public static Connection reg;
             st.executeUpdate("DELETE from cliente where DNI='"+us+"' AND contraseña='"+pass+"'");                 
                                          }
                      
+
 
         } catch (Exception e) { 
             System.err.println(e.getMessage()); 
@@ -162,9 +164,11 @@ public static Connection reg;
             }else{
             Statement st = reg.createStatement();
 
+
             st.executeUpdate("UPDATE `cliente` SET `Nombre`='"+nombre+"',`Apellidos`='"+apellidos+"',`Fecha_nac`='"+fecha+"',`Sexo`='"+sexo+"',`Contraseña`='"+contraseña+"' WHERE DNI='"+dni+"'");           
           
                    }
+
 
 
             
