@@ -133,9 +133,10 @@ public static Connection reg;
        return null;
     }
     
-    public  void BorrarCliente(String us,String pass)
+    public  void BorrarUsuario(String us,String pass)
     {       
         try {               
+
                                          if(reg.isClosed())
             {
          System.out.println("Sesion terminada");
@@ -145,12 +146,13 @@ public static Connection reg;
             st.executeUpdate("DELETE from cliente where DNI='"+us+"' AND contraseña='"+pass+"'");                 
                                          }
                      
+
         } catch (Exception e) { 
             System.err.println(e.getMessage()); 
         }       
     }
         
-    public void ActualizarCliente( String dni,String nombre,String apellidos, String fecha, String sexo, String contraseña)
+    public void ActualizarUsuario( String dni,String nombre,String apellidos, String fecha, String sexo, String contraseña)
     {
         try {          
                    if(reg.isClosed())
@@ -159,13 +161,26 @@ public static Connection reg;
         
             }else{
             Statement st = reg.createStatement();
+
             st.executeUpdate("UPDATE `cliente` SET `Nombre`='"+nombre+"',`Apellidos`='"+apellidos+"',`Fecha_nac`='"+fecha+"',`Sexo`='"+sexo+"',`Contraseña`='"+contraseña+"' WHERE DNI='"+dni+"'");           
           
                    }
+
 
             
         } catch (Exception e) { 
             System.err.println(e.getMessage()); 
         }        
-    }       
+    }  
+    
+    public void InsertarCliente( String dni,String nombre,String apellidos,String contraseña, String sexo, String fecha)
+    {
+        try {             
+            Statement st = reg.createStatement();
+            st.executeUpdate("INSERT INTO usuario (DNI, Nombre, Apellidos, Fecha_nac, Sexo, Contraseña) VALUES ('"+dni+"', '"+nombre+"', '"+apellidos+"','"+fecha+"','"+sexo+"', '"+contraseña+"')");             
+        } catch (Exception e) { 
+            System.err.println("cannot insert!"+fecha); 
+            System.err.println(e.getMessage()); 
+        } 
+    }
 }
