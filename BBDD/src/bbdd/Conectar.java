@@ -9,11 +9,9 @@ public class Conectar {
 
     public Conectar Devolver() {
 
-                Conectar conex=new Conectar();
-                return conex;
+        Conectar conex=new Conectar();
+        return conex;
     }
-    
-  
 
     Connection conectar=null;
    
