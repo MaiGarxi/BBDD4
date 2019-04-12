@@ -1,6 +1,7 @@
 package bbdd;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -62,7 +63,7 @@ public class Consultas {
         }               
     } 
     
-    public void InsertarReserva(double Precio, int Cod_hotel)
+    public void InsertarReserva(double Precio, int Cod_hotel, String entrada,String salida, String dni)
     {
         try 
         {  
@@ -71,7 +72,7 @@ public class Consultas {
                 System.out.println("Sesion terminada");        
             }else {
                 Statement st = reg.createStatement(); 
-                st.executeUpdate("INSERT INTO reserva(Precio, Cod_hotel) VALUES ('"+Precio+"','"+Cod_hotel+"')");      
+                st.executeUpdate("INSERT INTO `reserva`(`Precio`, `Fecha_entrada`, `Fecha_salida`, `Cod_hotel`, `DNI`) VALUES('"+Precio+"','"+entrada+"','"+salida+"','"+Cod_hotel+"','"+dni+"')");      
             }
         }catch (Exception e){ 
             System.err.println("Hubo un Error"); 
@@ -155,7 +156,7 @@ public class Consultas {
         }        
     }  
     
-    public void InsertarCliente( String dni,String nombre,String apellidos,String contraseña, String sexo, String fecha)
+    public void InsertarUsuario( String dni,String nombre,String apellidos,String contraseña, String sexo, String fecha)
     {
         try 
         {   
