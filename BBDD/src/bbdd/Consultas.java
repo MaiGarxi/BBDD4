@@ -23,6 +23,7 @@ public class Consultas {
             if(reg.isClosed())
             {
                 System.out.println("Sesion terminada");
+                
          return null;
             }
             else{
