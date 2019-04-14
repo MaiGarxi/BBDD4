@@ -1,7 +1,6 @@
 package bbdd;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -28,7 +27,7 @@ public class Consultas {
          return null;
             }
             else{
-                String query="SELECT DISTINCT Localidad from hotel order by Localidad ASC";
+                String query="SELECT DISTINCT Localidad from ubicacion order by Localidad ASC";
                 Statement sentencia = reg.createStatement(); 
                 ResultSet resultado=sentencia.executeQuery(query);     
                 return resultado;
@@ -52,7 +51,7 @@ public class Consultas {
                 return null;
             }
             else{
-                String query="SELECT Nombre from hotel where Localidad = '"+Localidad+"'";
+                String query="SELECT Nombre from hotel INNER JOIN ubicacion ON hotel.Cod_hotel = ubicacion.Cod_hotel where Localidad = '"+Localidad+"'";
                 Statement sentencia = reg.createStatement(); 
                 ResultSet resultado=sentencia.executeQuery(query); 
                 return resultado;
