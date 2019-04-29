@@ -124,6 +124,29 @@ public class Consultas {
        return null;
     }
     
+    public  ResultSet ComprobarUsuario(String dni) 
+    {
+        try 
+        {
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+                return null;
+            }else{
+                String query="select * from usuario where DNI='"+dni+"'";
+                Statement sentencia= reg.createStatement();
+                ResultSet resultado=sentencia.executeQuery(query);
+                return resultado;   
+            }                         
+        }catch (Exception e) 
+        {
+            JOptionPane.showMessageDialog(null,"error"); 
+            System.err.println("Hubo un Error ");
+            System.err.println(e.getMessage());
+        }
+       return null;
+    }
+    
     public void BorrarUsuario(String us,String pass)
     {       
         try 
