@@ -156,7 +156,7 @@ public class Consultas {
                 System.out.println("Sesion terminada");
             }else{
                 Statement st = reg.createStatement();
-                st.executeUpdate("DELETE from cliente where DNI='"+us+"' AND contraseña='"+pass+"'");                 
+                st.executeUpdate("DELETE from usuario where DNI='"+us+"' AND contraseña='"+pass+"'");                 
             }
         }catch (Exception e) { 
             System.err.println(e.getMessage()); 
