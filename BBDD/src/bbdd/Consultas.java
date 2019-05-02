@@ -63,7 +63,7 @@ public class Consultas {
         }               
     } 
     
-    public void InsertarReserva(double Precio, int Cod_hotel, String entrada,String salida, String dni)
+    public void InsertarReserva(double Precio, int Cod_hotel, String entrada,String salida, String dni, int Cod_habitacion)
     {
         try 
         {  
@@ -72,7 +72,7 @@ public class Consultas {
                 System.out.println("Sesion terminada");        
             }else {
                 Statement st = reg.createStatement(); 
-                st.executeUpdate("INSERT INTO `reserva`(`Precio`, `Fecha_entrada`, `Fecha_salida`, `Cod_hotel`, `DNI`) VALUES('"+Precio+"','"+entrada+"','"+salida+"','"+Cod_hotel+"','"+dni+"')");      
+                st.executeUpdate("INSERT INTO `reserva`(`Precio`, `Fecha_entrada`, `Fecha_salida`, `Cod_hotel`, `DNI`, `Cod_habitacion`) VALUES('"+Precio+"','"+entrada+"','"+salida+"','"+Cod_hotel+"','"+dni+"','"+Cod_habitacion+"')");      
             }
         }catch (Exception e){ 
             System.err.println("Hubo un Error"); 
@@ -156,7 +156,7 @@ public class Consultas {
                 System.out.println("Sesion terminada");
             }else{
                 Statement st = reg.createStatement();
-                st.executeUpdate("DELETE from cliente where DNI='"+us+"' AND contraseña='"+pass+"'");                 
+                st.executeUpdate("DELETE from usuario where DNI='"+us+"' AND contraseña='"+pass+"'");                 
             }
         }catch (Exception e) { 
             System.err.println(e.getMessage()); 
