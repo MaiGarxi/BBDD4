@@ -41,7 +41,7 @@ public class Consultas {
         }             
     }   
     
-    public ResultSet ConsultaHoteles_Nombre(String Localidad)
+    public ResultSet ConsultaAlojamiento_Nombre(String Localidad, String Alojamiento)
     {      
         try
         {
@@ -51,7 +51,7 @@ public class Consultas {
                 return null;
             }
             else{
-                String query="SELECT Nombre from alojamiento inner join ubicacion on ubicacion.Cod_alojamiento = alojamiento.Cod_alojamiento WHERE alojamiento.Cod_alojamiento like 'h%' and ubicacion.Localidad = '"+Localidad+"'";
+                String query="SELECT Nombre from alojamiento where Cod_alojamiento in (Select Cod_alojamiento from ubicacion where alojamiento.Cod_alojamiento like '"+Alojamiento+"' and ubicacion.Localidad = '"+Localidad+"')";
                 Statement sentencia = reg.createStatement(); 
                 ResultSet resultado=sentencia.executeQuery(query); 
                 return resultado;
@@ -62,6 +62,8 @@ public class Consultas {
             return null;
         }               
     } 
+    
+    
     
     public void InsertarReserva(double Precio, int Cod_hotel, String entrada,String salida)
     {
