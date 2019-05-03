@@ -51,7 +51,7 @@ public class Consultas {
                 return null;
             }
             else{
-                String query="SELECT Nombre from hotel INNER JOIN ubicacion ON hotel.Cod_hotel = ubicacion.Cod_hotel where Localidad = '"+Localidad+"'";
+                String query="SELECT Nombre from alojamiento inner join ubicacion on ubicacion.Cod_alojamiento = alojamiento.Cod_alojamiento WHERE alojamiento.Cod_alojamiento like 'h%' and ubicacion.Localidad = '"+Localidad+"'";
                 Statement sentencia = reg.createStatement(); 
                 ResultSet resultado=sentencia.executeQuery(query); 
                 return resultado;
