@@ -51,7 +51,8 @@ public class Consultas {
                 return null;
             }
             else{
-                String query="SELECT Cod_alojamiento ,Nombre from alojamiento where Cod_alojamiento in (Select Cod_alojamiento from ubicacion where ubicacion.Cod_alojamiento like '"+Alojamiento+"' and ubicacion.Localidad = '"+Localidad+"')";
+               String query = "SELECT alojamiento.Cod_alojamiento,IFNULL(COUNT(reserva.DNI),0) AS popularidad,alojamiento.Nombre FROM alojamiento LEFT JOIN reserva on reserva.Cod_alojamiento=alojamiento.Cod_alojamiento inner JOIN ubicacion on ubicacion.Cod_alojamiento=alojamiento.Cod_alojamiento WHERE alojamiento.Cod_alojamiento like  '"+Alojamiento+"' and ubicacion.Localidad = '"+Localidad+"' GROUP by alojamiento.Cod_alojamiento ORDER by popularidad DESC, alojamiento.Nombre DESC";
+             //   String query="SELECT Cod_alojamiento ,Nombre from alojamiento where Cod_alojamiento in (Select Cod_alojamiento from ubicacion where ubicacion.Cod_alojamiento like '"+Alojamiento+"' and ubicacion.Localidad = '"+Localidad+"')";
                 Statement sentencia = reg.createStatement(); 
                 ResultSet resultado=sentencia.executeQuery(query); 
                 return resultado;
@@ -63,27 +64,7 @@ public class Consultas {
         }               
     } 
     
-    public ResultSet ConsultaPopularidad_Nombre(String Localidad, String Alojamiento)
-    {      
-        try
-        {//"SELECT count(*) As popularidad from reserva where Cod_alojamiento in (Select Cod_alojamiento from ubicacion where ubicacion.Cod_alojamiento like '"+Alojamiento+"' and ubicacion.Localidad = '"+Localidad+"')";
-            if(reg.isClosed())
-            {
-                System.out.println("Sesion terminada");
-                return null;
-            }
-            else{
-                String query="SELECT DISTINCT reserva.Cod_alojamiento as alojamineto ,count(*) as popularidad from reserva INNER JOIN ubicacion ON ubicacion.Cod_alojamiento=reserva.Cod_alojamiento where ubicacion.Cod_alojamiento in (Select Cod_alojamiento from ubicacion where ubicacion.Cod_alojamiento ') GROUP by  reserva.Cod_alojamiento like '"+Alojamiento+"' and ubicacion.Localidad = '"+Localidad+"')";
-                Statement sentencia = reg.createStatement(); 
-                ResultSet resultado=sentencia.executeQuery(query); 
-                return resultado;
-            }                   
-        }catch (SQLException ex) 
-        {
-            System.err.println("Hubo un Error");
-            return null;
-        }               
-    } 
+ 
     
     
     
