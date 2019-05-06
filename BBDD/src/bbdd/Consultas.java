@@ -65,7 +65,7 @@ public class Consultas {
         }               
     }   
     
-    public void InsertarReserva(double Precio, String Cod_hotel, String entrada,String salida)
+    public void InsertarReserva(double Precio, String Cod_alojamiento, String entrada,String salida,String DNI,String Cod_habitacion)
     {
         try 
         {  
@@ -74,7 +74,7 @@ public class Consultas {
                 System.out.println("Sesion terminada");        
             }else {
                 Statement st = reg.createStatement(); 
-                st.executeUpdate("INSERT INTO `reserva`(`Precio`, `Fecha_entrada`, `Fecha_salida`, `Cod_hotel`) VALUES('"+Precio+"','"+entrada+"','"+salida+"','"+Cod_hotel+"')");      
+                st.executeUpdate("INSERT INTO `reserva`(`Fecha_entrada`, `Fecha_salida`, `Cod_alojamiento`, `DNI`, `Cod_habitacion`, `Precio`) VALUES('"+entrada+"','"+salida+"','"+Cod_alojamiento+"'+'"+DNI+"'+'"+Cod_habitacion+"'+'"+Precio+"')");      
             }
         }catch (Exception e){ 
             System.err.println("Hubo un Error"); 
@@ -82,7 +82,7 @@ public class Consultas {
         } 
     }   
 
-    public  ResultSet hotel_para_reservar(String Nombre)
+    public  ResultSet alojamiento_para_reservar(String Nombre)
     {         
         try
         {
