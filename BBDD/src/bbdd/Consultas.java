@@ -70,7 +70,7 @@ public class Consultas {
     
     
     
-    public void InsertarReserva(double Precio, int Cod_hotel, String entrada,String salida)
+    public void InsertarReserva(double Precio, String Cod_hotel, String entrada,String salida)
     {
         try 
         {  
@@ -96,7 +96,7 @@ public class Consultas {
                 System.out.println("Sesion terminada");
                 return null;
             }else{
-                String query="SELECT Cod_hotel from hotel where Nombre = '"+Nombre+"'";
+                  String query="SELECT alojamiento.Cod_alojamiento as codigo from alojamiento where alojamiento.Nombre like '"+Nombre+"'";
                 Statement sentencia = reg.createStatement(); 
                 ResultSet resultado=sentencia.executeQuery(query); 
                 return resultado;
