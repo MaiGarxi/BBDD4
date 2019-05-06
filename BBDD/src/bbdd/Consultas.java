@@ -123,7 +123,7 @@ public class Consultas {
             }                         
         }catch (Exception e) 
         {
-            JOptionPane.showMessageDialog(null,"error"); 
+            
             System.err.println("Hubo un Error ");
             System.err.println(e.getMessage());
         }
@@ -146,7 +146,7 @@ public class Consultas {
             }                         
         }catch (Exception e) 
         {
-            JOptionPane.showMessageDialog(null,"error"); 
+            
             System.err.println("Hubo un Error ");
             System.err.println(e.getMessage());
         }
