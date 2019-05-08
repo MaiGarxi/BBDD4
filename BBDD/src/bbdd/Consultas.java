@@ -53,7 +53,6 @@ public class Consultas {
             }
             else{
                String query = "SELECT alojamiento.Cod_alojamiento,IFNULL(COUNT(reserva.DNI),0) AS popularidad,alojamiento.Nombre FROM alojamiento LEFT JOIN reserva on reserva.Cod_alojamiento=alojamiento.Cod_alojamiento inner JOIN ubicacion on ubicacion.Cod_alojamiento=alojamiento.Cod_alojamiento WHERE alojamiento.Cod_alojamiento like  '"+Alojamiento+"' and ubicacion.Localidad = '"+Localidad+"' GROUP by alojamiento.Cod_alojamiento ORDER by popularidad DESC, alojamiento.Nombre DESC";
-             //   String query="SELECT Cod_alojamiento ,Nombre from alojamiento where Cod_alojamiento in (Select Cod_alojamiento from ubicacion where ubicacion.Cod_alojamiento like '"+Alojamiento+"' and ubicacion.Localidad = '"+Localidad+"')";
                 Statement sentencia = reg.createStatement(); 
                 ResultSet resultado=sentencia.executeQuery(query); 
                 return resultado;
@@ -63,7 +62,29 @@ public class Consultas {
             System.err.println("Hubo un Error");
             return null;
         }               
-    }   
+    }
+    
+   public ResultSet  ConsultaAlojamiento_Nombre(String Localidad, String Alojamiento,String fecha_inicio,String fecha_fin)
+   {
+         try
+        {
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+                return null;
+            }
+            else{
+          String query =   " SELECT alojamiento.Cod_alojamiento,alojamiento.Nombre,alojamiento.Capacidad,IFNULL(COUNT(reserva.DNI),0) AS popularidad FROM alojamiento LEFT JOIN reserva on reserva.Cod_alojamiento=alojamiento.Cod_alojamiento INNER JOIN ubicacion ON ubicacion.Cod_alojamiento=alojamiento.Cod_alojamiento WHERE alojamiento.Cod_alojamiento NOT in(SELECT DISTINCT reserva.Cod_alojamiento FROM reserva INNER JOIN ubicacion ON reserva.Cod_alojamiento = ubicacion.Cod_alojamiento WHERE '"+fecha_inicio+"' BETWEEN reserva.Fecha_entrada AND reserva.Fecha_salida OR '"+fecha_fin+"' BETWEEN reserva.Fecha_entrada AND reserva.Fecha_salida) AND ubicacion.Localidad='"+Localidad+"' AND alojamiento.Cod_alojamiento like '"+Alojamiento+"' GROUP by alojamiento.Cod_alojamiento ORDER by popularidad DESC, alojamiento.Nombre DESC ";
+                Statement sentencia = reg.createStatement(); 
+                ResultSet resultado=sentencia.executeQuery(query); 
+                return resultado;
+            }                   
+        }catch (SQLException ex) 
+        {
+            System.err.println("Hubo un Error");
+            return null;
+        }   
+   }
     
     public void InsertarReserva(double Precio, String Cod_alojamiento, String entrada,String salida,String DNI,String Cod_habitacion)
     {
@@ -103,6 +124,28 @@ public class Consultas {
         }          
     } 
     
+        
+     public  ResultSet habitaciones_casa_apar(String cod_alojamiento)
+    {         
+        try
+        {
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+                return null;
+            }else{
+                  String query="SELECT habitacion.tipo,habitacion.Descripcion FROM habitacion WHERE habitacion.Cod_alojamiento in (SELECT alojamiento.Cod_alojamiento FROM alojamiento where alojamiento.Nombre='"+cod_alojamiento+"' )";
+                Statement sentencia = reg.createStatement(); 
+                ResultSet resultado=sentencia.executeQuery(query); 
+                return resultado;   
+            }
+        }catch (SQLException ex) 
+        {
+            System.err.println("Hubo un Error ");
+            return null;
+        }          
+    } 
+    
      public  ResultSet consultar_camas_disponibles(String nombre_hotel,String fecha_inicio,String fecha_fin)
     {         
         try
@@ -115,7 +158,8 @@ public class Consultas {
                   String query="SELECT cama.* FROM habitacion INNER JOIN cama ON cama.Cod_habitacion=habitacion.Cod_habitacion WHERE habitacion.Cod_habitacion NOT in(SELECT DISTINCT reserva.Cod_habitacion FROM reserva INNER JOIN alojamiento ON reserva.Cod_alojamiento = alojamiento.Cod_alojamiento INNER JOIN habitacion ON alojamiento.Cod_alojamiento = habitacion.Cod_alojamiento WHERE '"+fecha_inicio+"' BETWEEN reserva.Fecha_entrada AND reserva.Fecha_salida OR '"+fecha_fin+"' BETWEEN reserva.Fecha_entrada AND reserva.Fecha_salida) AND habitacion.Cod_alojamiento in (select Cod_alojamiento from alojamiento where Nombre='"+nombre_hotel+ "') ORDER BY habitacion.Cod_habitacion DESC";
                 Statement sentencia = reg.createStatement(); 
                 ResultSet resultado=sentencia.executeQuery(query); 
-                return resultado;
+                System.out.println("estoy en la consulta");
+                return resultado;   
             }
         }catch (SQLException ex) 
         {
