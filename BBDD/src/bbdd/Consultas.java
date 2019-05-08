@@ -64,7 +64,7 @@ public class Consultas {
         }               
     }
     
-   public ResultSet  ConsultaAlojamiento_Nombre(String Localidad, String Alojamiento,String fecha_inicio,String fecha_fin)
+   public ResultSet  ConsultaAlojamiento_Nombre(String Localidad, String Alojamiento,String fecha_inicio,String fecha_fin,int personas)
    {
          try
         {
@@ -74,7 +74,7 @@ public class Consultas {
                 return null;
             }
             else{
-          String query =   " SELECT alojamiento.Cod_alojamiento,alojamiento.Nombre,alojamiento.Capacidad,IFNULL(COUNT(reserva.DNI),0) AS popularidad FROM alojamiento LEFT JOIN reserva on reserva.Cod_alojamiento=alojamiento.Cod_alojamiento INNER JOIN ubicacion ON ubicacion.Cod_alojamiento=alojamiento.Cod_alojamiento WHERE alojamiento.Cod_alojamiento NOT in(SELECT DISTINCT reserva.Cod_alojamiento FROM reserva INNER JOIN ubicacion ON reserva.Cod_alojamiento = ubicacion.Cod_alojamiento WHERE '"+fecha_inicio+"' BETWEEN reserva.Fecha_entrada AND reserva.Fecha_salida OR '"+fecha_fin+"' BETWEEN reserva.Fecha_entrada AND reserva.Fecha_salida) AND ubicacion.Localidad='"+Localidad+"' AND alojamiento.Cod_alojamiento like '"+Alojamiento+"' GROUP by alojamiento.Cod_alojamiento ORDER by popularidad DESC, alojamiento.Nombre DESC ";
+          String query =   " SELECT alojamiento.Cod_alojamiento,alojamiento.Nombre,alojamiento.Capacidad,IFNULL(COUNT(reserva.DNI),0) AS popularidad FROM alojamiento LEFT JOIN reserva on reserva.Cod_alojamiento=alojamiento.Cod_alojamiento INNER JOIN ubicacion ON ubicacion.Cod_alojamiento=alojamiento.Cod_alojamiento WHERE alojamiento.Cod_alojamiento NOT in(SELECT DISTINCT reserva.Cod_alojamiento FROM reserva INNER JOIN ubicacion ON reserva.Cod_alojamiento = ubicacion.Cod_alojamiento WHERE '"+fecha_inicio+"' BETWEEN reserva.Fecha_entrada AND reserva.Fecha_salida OR '"+fecha_fin+"' BETWEEN reserva.Fecha_entrada AND reserva.Fecha_salida) AND ubicacion.Localidad='"+Localidad+"' AND alojamiento.Cod_alojamiento like '"+Alojamiento+"' AND alojamiento.Capacidad>= '"+personas+"' GROUP by alojamiento.Cod_alojamiento ORDER by popularidad DESC, alojamiento.Nombre DESC ";
                 Statement sentencia = reg.createStatement(); 
                 ResultSet resultado=sentencia.executeQuery(query); 
                 return resultado;
