@@ -1,7 +1,6 @@
 package bbdd;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -262,7 +261,7 @@ public class Consultas {
         } 
     }
     
-    public  ResultSet ComprobarFestivos(Date fecha) 
+    public  ResultSet ComprobarFestivos(String fecha_inicio,String fecha_fin) 
     {
         try 
         {
@@ -271,7 +270,7 @@ public class Consultas {
                 System.out.println("Sesion terminada");
                 return null;
             }else{
-                String query="select fecha from festivos where fecha='"+fecha+"'";
+                String query="select fecha from festivos where fecha.festivos BETWEEN '"+fecha_inicio+"' AND '"+fecha_fin+"'";
                 Statement sentencia= reg.createStatement();
                 ResultSet resultado=sentencia.executeQuery(query);
                 return resultado;   
