@@ -1,6 +1,7 @@
 package bbdd;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -206,9 +207,7 @@ public class Consultas {
                 return resultado;   
             }                         
         }catch (Exception e) 
-        {
-            JOptionPane.showMessageDialog(null,"error"); 
-            System.err.println("Hubo un Error ");
+        { 
             System.err.println(e.getMessage());
         }
        return null;
@@ -261,5 +260,26 @@ public class Consultas {
             System.err.println("cannot insert!"+fecha); 
             System.err.println(e.getMessage()); 
         } 
+    }
+    
+    public  ResultSet ComprobarFestivos(Date fecha) 
+    {
+        try 
+        {
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+                return null;
+            }else{
+                String query="select fecha from festivos where fecha='"+fecha+"'";
+                Statement sentencia= reg.createStatement();
+                ResultSet resultado=sentencia.executeQuery(query);
+                return resultado;   
+            }                         
+        }catch (Exception e) 
+        { 
+            System.err.println(e.getMessage());
+        }
+       return null;
     }
 }
