@@ -134,14 +134,14 @@ public class Consultas {
                 System.out.println("Sesion terminada");
                 return null;
             }else{
-                  String query="SELECT habitacion.tipo,habitacion.Descripcion FROM habitacion WHERE habitacion.Cod_alojamiento in (SELECT alojamiento.Cod_alojamiento FROM alojamiento where alojamiento.Nombre='"+cod_alojamiento+"' )";
+                  String query="SELECT habitacion.tipo as tipito,habitacion.Descripcion as descri FROM habitacion inner join alojamiento on alojamiento.Cod_alojamiento=habitacion.Cod_alojamiento where alojamiento.Nombre='"+cod_alojamiento+"' ";
                 Statement sentencia = reg.createStatement(); 
                 ResultSet resultado=sentencia.executeQuery(query); 
                 return resultado;   
             }
         }catch (SQLException ex) 
         {
-            System.err.println("Hubo un Error ");
+            System.err.println("Hubo un Error_2 ");
             return null;
         }          
     } 
