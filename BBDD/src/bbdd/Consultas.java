@@ -270,7 +270,7 @@ public class Consultas {
                 System.out.println("Sesion terminada");
                 return null;
             }else{
-                String query="SELECT COUNT(Fecha_festivo) FROM festivo where Fecha_festivo BETWEEN '"+fecha_inicio+"' AND '"+fecha_fin+"'";
+                String query="SELECT COUNT(Fecha_festivo) as numeroFestivos FROM festivo where Fecha_festivo BETWEEN '"+fecha_inicio+"' AND '"+fecha_fin+"'";
                 Statement sentencia= reg.createStatement();
                 ResultSet resultado=sentencia.executeQuery(query);
                 return resultado;   
