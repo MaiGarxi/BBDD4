@@ -81,7 +81,7 @@ public class Consultas {
             }                   
         }catch (SQLException ex) 
         {
-            System.err.println("Hubo un Error");
+            System.err.println("Hubo un Error_2");
             return null;
         }   
    }
