@@ -282,7 +282,7 @@ public class Consultas {
        return null;
     }
     
-    public  ResultSet PrecioCasaApartamento(String Cod_alojamiento) 
+    public  ResultSet PrecioCasaApartamento(String localidad) 
     {
         try 
         {
@@ -291,7 +291,7 @@ public class Consultas {
                 System.out.println("Sesion terminada");
                 return null;
             }else{
-                String query="SELECT COUNT(Cod_habitacion) as numeroHab, precio FROM habitacion WHERE Cod_alojamiento like '"+Cod_alojamiento+"'";
+                String query="SELECT COUNT(Cod_habitacion) as numeroHab, precio FROM habitacion INNER JOIN alojamiento IN alojamiento.Cod_alojamiento = habitacion.Cod_alojamiento  WHERE alojamiento.Nombre like '"+localidad+"'";
                 Statement sentencia= reg.createStatement();
                 ResultSet resultado=sentencia.executeQuery(query);
                 return resultado;   
