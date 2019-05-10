@@ -281,4 +281,25 @@ public class Consultas {
         }
        return null;
     }
+    
+    public  ResultSet PrecioCasaApartamento(String Cod_alojamiento) 
+    {
+        try 
+        {
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+                return null;
+            }else{
+                String query="SELECT COUNT(Cod_habitacion) as numeroHab, precio FROM habitacion WHERE Cod_alojamiento like '"+Cod_alojamiento+"'";
+                Statement sentencia= reg.createStatement();
+                ResultSet resultado=sentencia.executeQuery(query);
+                return resultado;   
+            }                         
+        }catch (Exception e) 
+        { 
+            System.err.println(e.getMessage());
+        }
+       return null;
+    }
 }
