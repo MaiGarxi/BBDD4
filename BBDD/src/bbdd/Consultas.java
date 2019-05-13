@@ -86,7 +86,7 @@ public class Consultas {
         }   
    }
     
-    public void InsertarReserva(String entrada,String salida,String Cod_alojamiento,String Cod_habitacion,String DNI,double Precio)
+    public void InsertarReservaHotel(String entrada,String salida,String Cod_alojamiento,String DNI,String Cod_habitacion,double Precio)
     {
         try 
         {  
@@ -102,6 +102,23 @@ public class Consultas {
             System.err.println(e.getMessage()); 
         } 
     }   
+    
+        public void InsertarReservaCasaApartamento(String entrada,String salida,String Cod_alojamiento,String DNI,double Precio)
+    {
+        try 
+        {  
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");        
+            }else {
+                Statement st = reg.createStatement(); 
+                st.executeUpdate("INSERT INTO reserva ( Fecha_entrada, Fecha_salida, Cod_alojamiento, DNI,Precio) VALUES ('"+entrada+"','"+salida+"','"+Cod_alojamiento+"','"+DNI+"','"+Precio+"')");      
+            }
+        }catch (Exception e){ 
+            System.err.println("Hubo un Error"); 
+            System.err.println(e.getMessage()); 
+        } 
+    } 
 
     public  ResultSet alojamiento_para_reservar(String Nombre)
     {         
@@ -291,7 +308,7 @@ public class Consultas {
                 System.out.println("Sesion terminada");
                 return null;
             }else{
-                String query="SELECT COUNT(Cod_habitacion) as numeroHab, precio FROM habitacion INNER JOIN alojamiento IN alojamiento.Cod_alojamiento = habitacion.Cod_alojamiento  WHERE alojamiento.Nombre like '"+localidad+"'";
+                String query="SELECT COUNT(habitacion.Cod_habitacion) as numeroHab, habitacion.Precio FROM habitacion INNER JOIN alojamiento ON alojamiento.Cod_alojamiento = habitacion.Cod_alojamiento  WHERE alojamiento.Nombre like '"+localidad+"'";
                 Statement sentencia= reg.createStatement();
                 ResultSet resultado=sentencia.executeQuery(query);
                 return resultado;   
