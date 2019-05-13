@@ -103,7 +103,7 @@ public class Consultas {
         } 
     }   
     
-        public void InsertarReservaCasaApartamento(String entrada,String salida,String Cod_alojamiento,String DNI,double Precio)
+    public void InsertarReservaCasaApartamento(String entrada,String salida,String Cod_alojamiento,String DNI,double Precio)
     {
         try 
         {  
@@ -113,6 +113,23 @@ public class Consultas {
             }else {
                 Statement st = reg.createStatement(); 
                 st.executeUpdate("INSERT INTO reserva ( Fecha_entrada, Fecha_salida, Cod_alojamiento, DNI,Precio) VALUES ('"+entrada+"','"+salida+"','"+Cod_alojamiento+"','"+DNI+"','"+Precio+"')");      
+            }
+        }catch (Exception e){ 
+            System.err.println("Hubo un Error"); 
+            System.err.println(e.getMessage()); 
+        } 
+    } 
+    
+    public void InsertarBasesLegales(String DNI)
+    {
+        try 
+        {  
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");        
+            }else {
+                Statement st = reg.createStatement(); 
+                st.executeUpdate(" INSERT INTO `Baseslegales` ( `DNI`, `Fecha_Insercion`) VALUES ('"+DNI+"',Now())");      
             }
         }catch (Exception e){ 
             System.err.println("Hubo un Error"); 
@@ -229,7 +246,7 @@ public class Consultas {
        return null;
     }
     
-    public void BorrarUsuario(String us,String pass)
+    public void BorrarUsuario(String us)
     {       
         try 
         {               
@@ -238,7 +255,39 @@ public class Consultas {
                 System.out.println("Sesion terminada");
             }else{
                 Statement st = reg.createStatement();
-                st.executeUpdate("DELETE from usuario where DNI='"+us+"' AND contraseña='"+pass+"'");                 
+                st.executeUpdate("DELETE from usuario where DNI='"+us+"'");                 
+            }
+        }catch (Exception e) { 
+            System.err.println(e.getMessage()); 
+        }       
+    }
+    
+    public void BorrarReserva(String us)
+    {       
+        try 
+        {               
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+            }else{
+                Statement st = reg.createStatement();
+                st.executeUpdate("DELETE from reserva where DNI='"+us+"'");                 
+            }
+        }catch (Exception e) { 
+            System.err.println(e.getMessage()); 
+        }       
+    }
+    
+    public void BorrarBasesLegales(String us)
+    {       
+        try 
+        {               
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+            }else{
+                Statement st = reg.createStatement();
+                st.executeUpdate("DELETE from basesLegales where DNI='"+us+"'");                 
             }
         }catch (Exception e) { 
             System.err.println(e.getMessage()); 
