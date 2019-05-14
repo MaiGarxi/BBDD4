@@ -1,129 +1,392 @@
-
 package bbdd;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
 
 public class Consultas {
     
-    Conectar con =new Conectar(); 
-    Connection reg=con.conexion();
+    public static Conectar conex;
+    public static Connection reg;
+
+    public Consultas() {
+        Conectar conexi=new Conectar();
+        conex=conexi.Devolver();
+        reg=conex.conexion();
+    }
         
-    public ArrayList<String> ConsultaDestino()
+    public  ResultSet  ConsultaDestino()
     {             
         try{
-            ArrayList<String> destinos=new ArrayList();
-            String query="SELECT DISTINCT Localidad from hotel order by Localidad ASC";
-            Statement sentencia = reg.createStatement(); 
-            ResultSet resultado=sentencia.executeQuery(query);     
-            while (resultado.next()){                
-                destinos.add(resultado.getString("Localidad"));                 
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+                
+         return null;
             }
-            return destinos;
+            else{
+                String query="SELECT DISTINCT Localidad from ubicacion order by Localidad ASC";
+                Statement sentencia = reg.createStatement(); 
+                ResultSet resultado=sentencia.executeQuery(query);     
+                return resultado;
+            }
         }  
 
         catch (SQLException ex) 
         {
             System.err.println("Hubo un Error ");
-        }       
-          return null; 
+            return null; 
+        }             
     }   
     
-    public ArrayList<String> ConsultaHoteles_Nombre(String Localidad)
+    public ResultSet ConsultaAlojamiento_Nombre(String Localidad, String Alojamiento)
     {      
-        try{
-            ArrayList<String> NombreHoteles=new ArrayList();
-            
-            String query="SELECT Nombre from hotel where Localidad = '"+Localidad+"'";
-            
-            Statement sentencia = reg.createStatement(); 
-            ResultSet resultado=sentencia.executeQuery(query); 
-            while (resultado.next()){                
-                NombreHoteles.add(resultado.getString("Nombre"));                 
-            }
-            return NombreHoteles;
-        }   catch (SQLException ex) 
+        try
+        {
+            if(reg.isClosed())
             {
-                System.err.println("Hubo un Error");
-            }       
-        return null;
-    } 
+                System.out.println("Sesion terminada");
+                return null;
+            }
+            else{
+               String query = "SELECT alojamiento.Cod_alojamiento,IFNULL(COUNT(reserva.DNI),0) AS popularidad,alojamiento.Nombre FROM alojamiento LEFT JOIN reserva on reserva.Cod_alojamiento=alojamiento.Cod_alojamiento inner JOIN ubicacion on ubicacion.Cod_alojamiento=alojamiento.Cod_alojamiento WHERE alojamiento.Cod_alojamiento like  '"+Alojamiento+"' and ubicacion.Localidad = '"+Localidad+"' GROUP by alojamiento.Cod_alojamiento ORDER by popularidad DESC, alojamiento.Nombre DESC";
+                Statement sentencia = reg.createStatement(); 
+                ResultSet resultado=sentencia.executeQuery(query); 
+                return resultado;
+            }                   
+        }catch (SQLException ex) 
+        {
+            System.err.println("Hubo un Error");
+            return null;
+        }               
+    }
     
-    public void InsertarReserva(double Precio, int Cod_hotel)
+   public ResultSet  ConsultaAlojamiento_Nombre(String Localidad, String Alojamiento,String fecha_inicio,String fecha_fin,int personas)
+   {
+         try
+        {
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+                return null;
+            }
+            else{
+          String query =   " SELECT alojamiento.Cod_alojamiento,alojamiento.Nombre,alojamiento.Capacidad,IFNULL(COUNT(reserva.DNI),0) AS popularidad FROM alojamiento LEFT JOIN reserva on reserva.Cod_alojamiento=alojamiento.Cod_alojamiento INNER JOIN ubicacion ON ubicacion.Cod_alojamiento=alojamiento.Cod_alojamiento WHERE alojamiento.Cod_alojamiento NOT in(SELECT DISTINCT reserva.Cod_alojamiento FROM reserva INNER JOIN ubicacion ON reserva.Cod_alojamiento = ubicacion.Cod_alojamiento WHERE '"+fecha_inicio+"' BETWEEN reserva.Fecha_entrada AND reserva.Fecha_salida OR '"+fecha_fin+"' BETWEEN reserva.Fecha_entrada AND reserva.Fecha_salida) AND ubicacion.Localidad='"+Localidad+"' AND alojamiento.Cod_alojamiento like '"+Alojamiento+"' AND alojamiento.Capacidad>= '"+personas+"' GROUP by alojamiento.Cod_alojamiento ORDER by popularidad DESC, alojamiento.Nombre DESC ";
+                Statement sentencia = reg.createStatement(); 
+                ResultSet resultado=sentencia.executeQuery(query); 
+                return resultado;
+            }                   
+        }catch (SQLException ex) 
+        {
+            System.err.println("Hubo un Error_2");
+            return null;
+        }   
+   }
+    
+    public void InsertarReservaHotel(String entrada,String salida,String Cod_alojamiento,String DNI,String Cod_habitacion,double Precio)
     {
-        try {  
-            Statement st = reg.createStatement(); 
-            
-            st.executeUpdate("INSERT INTO reserva(Precio, Cod_hotel) VALUES ('"+Precio+"','"+Cod_hotel+"')");         
-        
-        }   catch (Exception e) { 
-                System.err.println("Hubo un Error"); 
-                System.err.println(e.getMessage()); 
-            } 
-    }   
-
-    public ArrayList<String> hotel_para_reservar(String Nombre)
-    {         
-        try{
-            ArrayList<String> NombreHoteles=new ArrayList();
-
-            String query="SELECT Cod_hotel from hotel where Nombre = '"+Nombre+"'";
-
-            Statement sentencia = reg.createStatement(); 
-            ResultSet resultado=sentencia.executeQuery(query); 
-            while (resultado.next()){                
-                NombreHoteles.add(resultado.getString("Cod_hotel"));                 
-            }
-            return NombreHoteles;
-        }   catch (SQLException ex) 
+        try 
+        {  
+            if(reg.isClosed())
             {
-                System.err.println("Hubo un Error ");
-            }       
-        return null;
+                System.out.println("Sesion terminada");        
+            }else {
+                Statement st = reg.createStatement(); 
+                st.executeUpdate("INSERT INTO reserva ( Fecha_entrada, Fecha_salida, Cod_alojamiento, DNI,Cod_habitacion,Precio) VALUES ('"+entrada+"','"+salida+"','"+Cod_alojamiento+"','"+DNI+"','"+Cod_habitacion+"','"+Precio+"')");      
+            }
+        }catch (Exception e){ 
+            System.err.println("Hubo un Error"); 
+            System.err.println(e.getMessage()); 
+        } 
+    }   
+    
+    public void InsertarReservaCasaApartamento(String entrada,String salida,String Cod_alojamiento,String DNI,double Precio)
+    {
+        try 
+        {  
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");        
+            }else {
+                Statement st = reg.createStatement(); 
+                st.executeUpdate("INSERT INTO reserva ( Fecha_entrada, Fecha_salida, Cod_alojamiento, DNI,Precio) VALUES ('"+entrada+"','"+salida+"','"+Cod_alojamiento+"','"+DNI+"','"+Precio+"')");      
+            }
+        }catch (Exception e){ 
+            System.err.println("Hubo un Error"); 
+            System.err.println(e.getMessage()); 
+        } 
     } 
     
-    public void Usuario(String us,String pass)
+    public void InsertarBasesLegales(String DNI)
+    {
+        try 
+        {  
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");        
+            }else {
+                Statement st = reg.createStatement(); 
+                st.executeUpdate(" INSERT INTO `Baseslegales` ( `DNI`, `Fecha_Insercion`) VALUES ('"+DNI+"',Now())");      
+            }
+        }catch (Exception e){ 
+            System.err.println("Hubo un Error"); 
+            System.err.println(e.getMessage()); 
+        } 
+    } 
+
+    public  ResultSet alojamiento_para_reservar(String Nombre)
+    {         
+        try
+        {
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+                return null;
+            }else{
+                  String query="SELECT alojamiento.Cod_alojamiento as codigo from alojamiento where alojamiento.Nombre like '"+Nombre+"'";
+                Statement sentencia = reg.createStatement(); 
+                ResultSet resultado=sentencia.executeQuery(query); 
+                return resultado;
+            }
+        }catch (SQLException ex) 
+        {
+            System.err.println("Hubo un Error ");
+            return null;
+        }          
+    } 
+    
+        
+     public  ResultSet habitaciones_casa_apar(String cod_alojamiento)
+    {         
+        try
+        {
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+                return null;
+            }else{
+                  String query="SELECT habitacion.tipo as tipito,habitacion.Descripcion as descri FROM habitacion inner join alojamiento on alojamiento.Cod_alojamiento=habitacion.Cod_alojamiento where alojamiento.Nombre='"+cod_alojamiento+"' ";
+                Statement sentencia = reg.createStatement(); 
+                ResultSet resultado=sentencia.executeQuery(query); 
+                return resultado;   
+            }
+        }catch (SQLException ex) 
+        {
+            System.err.println("Hubo un Error_2 ");
+            return null;
+        }          
+    } 
+    
+     public  ResultSet consultar_camas_disponibles(String nombre_hotel,String fecha_inicio,String fecha_fin)
+    {         
+        try
+        {
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+                return null;
+            }else{
+                  String query="SELECT cama.* FROM habitacion INNER JOIN cama ON cama.Cod_habitacion=habitacion.Cod_habitacion WHERE habitacion.Cod_habitacion NOT in(SELECT DISTINCT reserva.Cod_habitacion FROM reserva INNER JOIN alojamiento ON reserva.Cod_alojamiento = alojamiento.Cod_alojamiento INNER JOIN habitacion ON alojamiento.Cod_alojamiento = habitacion.Cod_alojamiento WHERE '"+fecha_inicio+"' BETWEEN reserva.Fecha_entrada AND reserva.Fecha_salida OR '"+fecha_fin+"' BETWEEN reserva.Fecha_entrada AND reserva.Fecha_salida) AND habitacion.Cod_alojamiento in (select Cod_alojamiento from alojamiento where Nombre='"+nombre_hotel+ "') ORDER BY habitacion.Cod_habitacion DESC";
+                Statement sentencia = reg.createStatement(); 
+                ResultSet resultado=sentencia.executeQuery(query); 
+                System.out.println("estoy en la consulta");
+                return resultado;   
+            }
+        }catch (SQLException ex) 
+        {
+            System.err.println("Hubo un Error ");
+            return null;
+        }          
+    } 
+    
+    public  ResultSet ObtenerUsuario(String us,String pass) 
     {
         try 
         {
-            String query="select DNI, Contraseña from cliente where DNI='"+us+"' AND contraseña='"+pass+"'";
-            Statement sentencia= reg.createStatement();
-            ResultSet resultado=sentencia.executeQuery(query);
-                         
-            while (resultado.next())
+            if(reg.isClosed())
             {
-                String dni=resultado.getString("DNI");
-                String contrasena=resultado.getString("contraseña");
-            }                            
-        }catch (Exception e)
-            {
-                System.err.println("Hubo un Error ");
-                System.err.println(e.getMessage());
-            }
+                System.out.println("Sesion terminada");
+                return null;
+            }else{
+                String query="select * from usuario where DNI='"+us+"' AND Contraseña='"+pass+"'";
+                Statement sentencia= reg.createStatement();
+                ResultSet resultado=sentencia.executeQuery(query);
+                return resultado;   
+            }                         
+        }catch (Exception e) 
+        {
+            JOptionPane.showMessageDialog(null,"error"); 
+            System.err.println("Hubo un Error ");
+            System.err.println(e.getMessage());
+        }
+       return null;
     }
     
-    public  void BorrarCliente(String us,String pass)
+    public  ResultSet ComprobarUsuario(String dni) 
+    {
+        try 
+        {
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+                return null;
+            }else{
+                String query="select * from usuario where DNI='"+dni+"'";
+                Statement sentencia= reg.createStatement();
+                ResultSet resultado=sentencia.executeQuery(query);
+                return resultado;   
+            }                         
+        }catch (Exception e) 
+        { 
+            System.err.println(e.getMessage());
+        }
+       return null;
+    }
+    
+    public void BorrarUsuario(String us)
     {       
-        try {               
-            Statement st = reg.createStatement();
-            st.executeUpdate("DELETE from cliente where DNI='"+us+"' AND contraseña='"+pass+"'");                       
-        } catch (Exception e) { 
+        try 
+        {               
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+            }else{
+                Statement st = reg.createStatement();
+                st.executeUpdate("DELETE from usuario where DNI='"+us+"'");                 
+            }
+        }catch (Exception e) { 
+            System.err.println(e.getMessage()); 
+        }       
+    }
+    
+    public void BorrarReserva(String us)
+    {       
+        try 
+        {               
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+            }else{
+                Statement st = reg.createStatement();
+                st.executeUpdate("DELETE from reserva where DNI='"+us+"'");                 
+            }
+        }catch (Exception e) { 
+            System.err.println(e.getMessage()); 
+        }       
+    }
+    
+    public void BorrarBasesLegales(String us)
+    {       
+        try 
+        {               
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+            }else{
+                Statement st = reg.createStatement();
+                st.executeUpdate("DELETE from basesLegales where DNI='"+us+"'");                 
+            }
+        }catch (Exception e) { 
             System.err.println(e.getMessage()); 
         }       
     }
         
-    public void ActualizarCliente( String dni,String nombre,String apellidos, String fecha, String sexo, String contraseña)
+    public void ActualizarUsuario( String dni,String nombre,String apellidos, String fecha, String sexo, String contraseña)
     {
-        try {             
-            Statement st = reg.createStatement();
-            st.executeUpdate("UPDATE `cliente` SET `Nombre`='"+nombre+"',`Apellidos`='"+apellidos+"',`Fecha_nac`='"+fecha+"',`Sexo`='"+sexo+"',`Contraseña`='"+contraseña+"' WHERE DNI='"+dni+"'");           
-            reg.close(); 
-            
+        try 
+        {          
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+            }else{
+                Statement st = reg.createStatement();
+                st.executeUpdate("UPDATE `usuario` SET `Nombre`='"+nombre+"',`Apellidos`='"+apellidos+"',`Fecha_nac`='"+fecha+"',`Sexo`='"+sexo+"',`Contraseña`='"+contraseña+"' WHERE DNI='"+dni+"'");           
+            }            
         } catch (Exception e) { 
             System.err.println(e.getMessage()); 
         }        
-    }       
+    }  
+    
+    public void InsertarUsuario( String dni,String nombre,String apellidos,String contraseña, String sexo, String fecha)
+    {
+        try 
+        {   
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+            }else{
+            Statement st = reg.createStatement();
+            st.executeUpdate("INSERT INTO usuario (DNI, Nombre, Apellidos, Fecha_nac, Sexo, Contraseña) VALUES ('"+dni+"', '"+nombre+"', '"+apellidos+"','"+fecha+"','"+sexo+"', '"+contraseña+"')");             
+            }
+        } catch (Exception e) { 
+            System.err.println("cannot insert!"+fecha); 
+            System.err.println(e.getMessage()); 
+        } 
+    }
+    
+    public  ResultSet ComprobarFestivos(String fecha_inicio,String fecha_fin) 
+    {
+        try 
+        {
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+                return null;
+            }else{
+                String query="SELECT COUNT(Fecha_festivo) as numeroFestivos FROM festivo where Fecha_festivo BETWEEN '"+fecha_inicio+"' AND '"+fecha_fin+"'";
+                Statement sentencia= reg.createStatement();
+                ResultSet resultado=sentencia.executeQuery(query);
+                return resultado;   
+            }                         
+        }catch (Exception e) 
+        { 
+            System.err.println(e.getMessage());
+        }
+       return null;
+    }
+    
+    public  ResultSet PrecioCasaApartamento(String localidad) 
+    {
+        try 
+        {
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+                return null;
+            }else{
+                String query="SELECT COUNT(habitacion.Cod_habitacion) as numeroHab, habitacion.Precio FROM habitacion INNER JOIN alojamiento ON alojamiento.Cod_alojamiento = habitacion.Cod_alojamiento  WHERE alojamiento.Nombre like '"+localidad+"'";
+                Statement sentencia= reg.createStatement();
+                ResultSet resultado=sentencia.executeQuery(query);
+                return resultado;   
+            }                         
+        }catch (Exception e) 
+        { 
+            System.err.println(e.getMessage());
+        }
+       return null;
+    }
+    
+    public  ResultSet ObtenerReserva(String dni) 
+    {
+        try 
+        {
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+                return null;
+            }else{
+                String query="SELECT * FROM reserva WHERE dni like '"+dni+"'";
+                Statement sentencia= reg.createStatement();
+                ResultSet resultado=sentencia.executeQuery(query);
+                return resultado;   
+            }                         
+        }catch (Exception e) 
+        { 
+            System.err.println(e.getMessage());
+        }
+       return null;
+    }
 }
