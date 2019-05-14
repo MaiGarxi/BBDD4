@@ -42,29 +42,9 @@ public class Consultas {
         }             
     }   
     
-    public ResultSet ConsultaAlojamiento_Nombre(String Localidad, String Alojamiento)
-    {      
-        try
-        {
-            if(reg.isClosed())
-            {
-                System.out.println("Sesion terminada");
-                return null;
-            }
-            else{
-               String query = "SELECT alojamiento.Cod_alojamiento,IFNULL(COUNT(reserva.DNI),0) AS popularidad,alojamiento.Nombre FROM alojamiento LEFT JOIN reserva on reserva.Cod_alojamiento=alojamiento.Cod_alojamiento inner JOIN ubicacion on ubicacion.Cod_alojamiento=alojamiento.Cod_alojamiento WHERE alojamiento.Cod_alojamiento like  '"+Alojamiento+"' and ubicacion.Localidad = '"+Localidad+"' GROUP by alojamiento.Cod_alojamiento ORDER by popularidad DESC, alojamiento.Nombre DESC";
-                Statement sentencia = reg.createStatement(); 
-                ResultSet resultado=sentencia.executeQuery(query); 
-                return resultado;
-            }                   
-        }catch (SQLException ex) 
-        {
-            System.err.println("Hubo un Error");
-            return null;
-        }               
-    }
-    
-   public ResultSet  ConsultaAlojamiento_Nombre(String Localidad, String Alojamiento,String fecha_inicio,String fecha_fin,int personas)
+  
+         /*Nuevas migraciones Africanas*/
+   public ResultSet  Consultahotel_Nombre(String Localidad)
    {
          try
         {
@@ -74,7 +54,7 @@ public class Consultas {
                 return null;
             }
             else{
-          String query =   " SELECT alojamiento.Cod_alojamiento,alojamiento.Nombre,alojamiento.Capacidad,IFNULL(COUNT(reserva.DNI),0) AS popularidad FROM alojamiento LEFT JOIN reserva on reserva.Cod_alojamiento=alojamiento.Cod_alojamiento INNER JOIN ubicacion ON ubicacion.Cod_alojamiento=alojamiento.Cod_alojamiento WHERE alojamiento.Cod_alojamiento NOT in(SELECT DISTINCT reserva.Cod_alojamiento FROM reserva INNER JOIN ubicacion ON reserva.Cod_alojamiento = ubicacion.Cod_alojamiento WHERE '"+fecha_inicio+"' BETWEEN reserva.Fecha_entrada AND reserva.Fecha_salida OR '"+fecha_fin+"' BETWEEN reserva.Fecha_entrada AND reserva.Fecha_salida) AND ubicacion.Localidad='"+Localidad+"' AND alojamiento.Cod_alojamiento like '"+Alojamiento+"' AND alojamiento.Capacidad>= '"+personas+"' GROUP by alojamiento.Cod_alojamiento ORDER by popularidad DESC, alojamiento.Nombre DESC ";
+           String query=   " SELECT hotel.Cod_hotel, hotel.Nombre, hotel.Capacidad, IFNULL(COUNT(reserva_hotel_habitacion.Cod_reserva), 0) AS popularidad FROM hotel LEFT JOIN reserva_hotel_habitacion ON hotel.Cod_hotel = reserva_hotel_habitacion.Cod_hotel LEFT JOIN reserva on reserva.Cod_reserva=reserva_hotel_habitacion.Cod_reserva INNER JOIN ubicacion on hotel.Cod_hotel=ubicacion.Cod_hotel where ubicacion.Localidad='"+Localidad+" GROUP BY hotel.Cod_hotel order by popularidad Desc,hotel.nombre Desc";
                 Statement sentencia = reg.createStatement(); 
                 ResultSet resultado=sentencia.executeQuery(query); 
                 return resultado;
@@ -85,7 +65,52 @@ public class Consultas {
             return null;
         }   
    }
-    
+   
+     public ResultSet  Consultacasa_Nombre(String Localidad, String Alojamiento,String fecha_inicio,String fecha_fin,int personas)
+   {
+         try
+        {
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+                return null;
+            }
+            else{
+                String query="SELECT casa.Cod_casa, casa.Nombre, casa.Capacidad,IFNULL(COUNT(reserva_casa.Cod_reserva), 0) AS popularidad FROM casa LEFT join reserva_casa on casa.Cod_casa=reserva_casa.Cod_casa left join reserva on reserva.Cod_reserva=reserva_casa.Cod_reserva inner join ubicacion on casa.Cod_casa=ubicacion.Cod_casa where casa.Cod_casa not in( SELECT DISTINCT reserva_casa.Cod_casa FROM reserva_casa INNER join reserva on reserva_casa.Cod_reserva=reserva.Cod_reserva WHERE '"+fecha_inicio+"' BETWEEN reserva.Fecha_entrada AND reserva.Fecha_salida OR '"+fecha_fin+"' BETWEEN reserva.Fecha_entrada AND reserva.Fecha_salida ) AND ubicacion.Localidad='"+Localidad+" AND casa.Capacidad>= '"+personas+"' GROUP BY casa.Cod_casa order by popularidad Desc,casa.nombre Desc ";
+                Statement sentencia = reg.createStatement(); 
+                ResultSet resultado=sentencia.executeQuery(query); 
+                return resultado;
+            }                   
+        }catch (SQLException ex) 
+        {
+            System.err.println("Hubo un Error_2");
+            return null;
+        }   
+   }
+   
+     public ResultSet  Consulta_apartamento_Nombre(String Localidad, String Alojamiento,String fecha_inicio,String fecha_fin,int personas)
+   {
+         try
+        {
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+                return null;
+            }
+            else{
+                String query="SELECT apartamento.Cod_apartamento, apartamento.Nombre, apartamento.Capacidad,IFNULL(COUNT(reserva_apartamento.Cod_reserva), 0) AS popularidad FROM apartamento LEFT join reserva_apartamento on apartamento.Cod_apartamento=reserva_apartamento.Cod_apartamento left join reserva on reserva.Cod_reserva=reserva_apartamento.Cod_reserva inner join ubicacion on apartamento.Cod_apartamento=ubicacion.Cod_apartamento where apartamento.Cod_apartamento not in( SELECT DISTINCT reserva_apartamento.Cod_apartamento FROM reserva_apartamento INNER join reserva on reserva_apartamento.Cod_reserva=reserva.Cod_reserva WHERE '"+fecha_inicio+"' BETWEEN reserva.Fecha_entrada AND reserva.Fecha_salida OR '"+fecha_fin+"' BETWEEN reserva.Fecha_entrada AND reserva.Fecha_salida ) AND ubicacion.Localidad='"+Localidad+" AND apartamento.Capacidad>= '"+personas+"' GROUP BY apartamento.Cod_apartamento order by popularidad Desc,apartamento.nombre Desc ";
+                Statement sentencia = reg.createStatement(); 
+                ResultSet resultado=sentencia.executeQuery(query); 
+                return resultado;
+            }                   
+        }catch (SQLException ex) 
+        {
+            System.err.println("Hubo un Error_2");
+            return null;
+        }   
+   }
+   
+      /*Nuevas migraciones Africanas*/
     public void InsertarReservaHotel(String entrada,String salida,String Cod_alojamiento,String DNI,String Cod_habitacion,double Precio)
     {
         try 
