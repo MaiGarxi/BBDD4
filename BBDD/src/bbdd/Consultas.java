@@ -368,4 +368,25 @@ public class Consultas {
         }
        return null;
     }
+    
+    public  ResultSet ObtenerReserva(String dni) 
+    {
+        try 
+        {
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+                return null;
+            }else{
+                String query="SELECT * FROM reserva WHERE dni like '"+dni+"'";
+                Statement sentencia= reg.createStatement();
+                ResultSet resultado=sentencia.executeQuery(query);
+                return resultado;   
+            }                         
+        }catch (Exception e) 
+        { 
+            System.err.println(e.getMessage());
+        }
+       return null;
+    }
 }
