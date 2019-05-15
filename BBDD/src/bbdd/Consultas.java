@@ -496,4 +496,25 @@ public class Consultas {
         }
        return null;
     }
+    
+    public  ResultSet Promocion(String dni, int codigo) 
+    {
+        try 
+        {
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+                return null;
+            }else{
+                String query="SELECT IFNULL(count(Cod_promocion),0), Valor FROM promocion WHERE DNI like '"+dni+"' and Cod_promocion like '"+codigo+"'";
+                Statement sentencia= reg.createStatement();
+                ResultSet resultado=sentencia.executeQuery(query);
+                return resultado;   
+            }                         
+        }catch (Exception e) 
+        { 
+            System.err.println(e.getMessage());
+        }
+       return null;
+    }
 }
