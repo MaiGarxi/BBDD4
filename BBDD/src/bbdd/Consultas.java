@@ -42,10 +42,8 @@ public class Consultas {
         }             
     }   
     
-  
-         /*Nuevas migraciones Africanas*/
-   public ResultSet  Consultahotel_Nombre(String Localidad)
-   {
+    public ResultSet  Consultahotel_Nombre(String Localidad)
+    {
          try
         {
             if(reg.isClosed())
@@ -64,10 +62,10 @@ public class Consultas {
             System.err.println("Hubo un Error_2");
             return null;
         }   
-   }
+    }
    
-     public ResultSet  Consultacasa_Nombre(String Localidad,String fecha_inicio,String fecha_fin,int personas)
-   {
+    public ResultSet  Consultacasa_Nombre(String Localidad,String fecha_inicio,String fecha_fin,int personas)
+    {
          try
         {
             if(reg.isClosed())
@@ -86,10 +84,10 @@ public class Consultas {
             System.err.println("Hubo un Error_2");
             return null;
         }   
-   }
+    }
    
-     public ResultSet  Consulta_apartamento_Nombre(String Localidad,String fecha_inicio,String fecha_fin,int personas)
-   {
+    public ResultSet  Consulta_apartamento_Nombre(String Localidad,String fecha_inicio,String fecha_fin,int personas)
+    {
          try
         {
             if(reg.isClosed())
@@ -108,9 +106,9 @@ public class Consultas {
             System.err.println("Hubo un Error_2");
             return null;
         }   
-   }
+    }
    
-        public  ResultSet habitaciones_casa(String nombre_casa)
+    public  ResultSet habitaciones_casa(String nombre_casa)
     {         
         try
         {
@@ -119,8 +117,7 @@ public class Consultas {
                 System.out.println("Sesion terminada");
                 return null;
             }else{
-                System.out.println("-----------"+nombre_casa);
-             String query="SELECT habitacion.Tipo ,habitacion.Descripcion FROM habitacion INNER JOIN casa ON casa.Cod_casa = habitacion.Cod_casa WHERE casa.Nombre='"+nombre_casa+"'";
+                String query="SELECT habitacion.Tipo ,habitacion.Descripcion FROM habitacion INNER JOIN casa ON casa.Cod_casa = habitacion.Cod_casa WHERE casa.Nombre='"+nombre_casa+"'";
                 Statement sentencia = reg.createStatement(); 
                 ResultSet resultado=sentencia.executeQuery(query); 
                 
@@ -133,7 +130,7 @@ public class Consultas {
         }          
     } 
      
-      public  ResultSet habitaciones_apartamento(String nombre_apartamento)
+    public  ResultSet habitaciones_apartamento(String nombre_apartamento)
     {         
         try
         {
@@ -142,8 +139,8 @@ public class Consultas {
                 System.out.println("Sesion terminada");
                 return null;
             }else{
-                System.out.println("-----------"+nombre_apartamento);
-                 String query="SELECT habitacion.Tipo ,habitacion.Descripcion FROM habitacion INNER JOIN apartamento ON apartamento.Cod_apartamento = habitacion.Cod_apartamento WHERE apartamento.Nombre='"+nombre_apartamento+"'";
+                
+                String query="SELECT habitacion.Tipo ,habitacion.Descripcion FROM habitacion INNER JOIN apartamento ON apartamento.Cod_apartamento = habitacion.Cod_apartamento WHERE apartamento.Nombre='"+nombre_apartamento+"'";
                 Statement sentencia = reg.createStatement(); 
                 ResultSet resultado=sentencia.executeQuery(query); 
                 return resultado;   
@@ -155,7 +152,7 @@ public class Consultas {
         }          
     }  
      
-        public  ResultSet consultar_camas_disponibles(String nombre_hotel,String fecha_inicio,String fecha_fin)
+    public  ResultSet consultar_camas_disponibles(String nombre_hotel,String fecha_inicio,String fecha_fin)
     {         
         try
         {
@@ -167,7 +164,6 @@ public class Consultas {
                 String query="Select cama.* from cama inner join habitacion_hotel on cama.Cod_habitacion_hotel = habitacion_hotel.Cod_habitacion_hotel where habitacion_hotel.Cod_habitacion_hotel not in (Select Distinct reserva_hotel_habitacion.Cod_habitacion_hotel from reserva_hotel_habitacion inner join reserva ON reserva.Cod_reserva=reserva_hotel_habitacion.Cod_reserva WHERE '"+fecha_inicio+"' BETWEEN reserva.Fecha_entrada AND reserva.Fecha_salida OR '"+fecha_fin+"' BETWEEN reserva.Fecha_entrada AND reserva.Fecha_salida) and habitacion_hotel.Cod_hotel in (Select hotel.Cod_hotel from hotel where hotel.Nombre='"+nombre_hotel+"') order by habitacion_hotel.Cod_habitacion_hotel Desc ";
                 Statement sentencia = reg.createStatement(); 
                 ResultSet resultado=sentencia.executeQuery(query); 
-                System.out.println("estoy en la consulta");
                 return resultado;   
             }
         }catch (SQLException ex) 
@@ -177,7 +173,7 @@ public class Consultas {
         }          
     } 
       
-      public  ResultSet PrecioApartamento(String localidad) 
+    public  ResultSet PrecioApartamento(String localidad) 
     {
         try 
         {
@@ -207,7 +203,7 @@ public class Consultas {
                 System.out.println("Sesion terminada");
                 return null;
             }else{
-            String query="SELECT  casa.Precio FROM casa WHERE casa.Nombre like '"+localidad+"'";
+                String query="SELECT  casa.Precio FROM casa WHERE casa.Nombre like '"+localidad+"'";
                 Statement sentencia= reg.createStatement();
                 ResultSet resultado=sentencia.executeQuery(query);
                 return resultado;   
@@ -218,7 +214,6 @@ public class Consultas {
         }
        return null;
     } 
-      /*Nuevas migraciones Africanas*/
       
     public void InsertarReservaHotel(String entrada,String salida,String Cod_alojamiento,String DNI,String Cod_habitacion,double Precio)
     {
@@ -292,7 +287,7 @@ public class Consultas {
         }          
     } 
     
-        public  ResultSet casa_para_reservar(String Nombre)
+    public  ResultSet casa_para_reservar(String Nombre)
     {         
         try
         {
@@ -312,7 +307,8 @@ public class Consultas {
             return null;
         }          
     }
-            public  ResultSet apartamento_para_reservar(String Nombre)
+    
+    public  ResultSet apartamento_para_reservar(String Nombre)
     {         
         try
         {
@@ -321,7 +317,7 @@ public class Consultas {
                 System.out.println("Sesion terminada");
                 return null;
             }else{
-                  String query="SELECT apartamento.Cod_apartamento as codigo from apartamento where apartamento.Nombre like '"+Nombre+"'";
+                String query="SELECT apartamento.Cod_apartamento as codigo from apartamento where apartamento.Nombre like '"+Nombre+"'";
                 Statement sentencia = reg.createStatement(); 
                 ResultSet resultado=sentencia.executeQuery(query); 
                 return resultado;
@@ -331,9 +327,7 @@ public class Consultas {
             System.err.println("Hubo un Error ");
             return null;
         }          
-    }
-  
-   
+    } 
     
     public  ResultSet ObtenerUsuario(String us,String pass) 
     {
@@ -455,7 +449,6 @@ public class Consultas {
             st.executeUpdate("INSERT INTO usuario (DNI, Nombre, Apellidos, Fecha_nac, Sexo, Contraseña) VALUES ('"+dni+"', '"+nombre+"', '"+apellidos+"','"+fecha+"','"+sexo+"', '"+contraseña+"')");             
             }
         } catch (Exception e) { 
-            System.err.println("cannot insert!"+fecha); 
             System.err.println(e.getMessage()); 
         } 
     }
