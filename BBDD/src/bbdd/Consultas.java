@@ -522,7 +522,7 @@ public class Consultas {
                 System.out.println("Sesion terminada");
                 return null;
             }else{
-                String query="SELECT * FROM reserva WHERE dni like '"+dni+"'";
+                String query="SELECT * FROM reserva WHERE DNI like '"+dni+"'";
                 Statement sentencia= reg.createStatement();
                 ResultSet resultado=sentencia.executeQuery(query);
                 return resultado;   
