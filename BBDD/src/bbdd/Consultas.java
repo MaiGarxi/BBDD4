@@ -215,7 +215,7 @@ public class Consultas {
        return null;
     } 
       
-    public void InsertarReservaHotel(String entrada,String salida,String Cod_alojamiento,String DNI,String Cod_habitacion,double Precio)
+     public void InsertarReserva(String entrada,String salida,String DNI,double Precio)
     {
         try 
         {  
@@ -224,13 +224,93 @@ public class Consultas {
                 System.out.println("Sesion terminada");        
             }else {
                 Statement st = reg.createStatement(); 
-                st.executeUpdate("INSERT INTO reserva ( Fecha_entrada, Fecha_salida, Cod_alojamiento, DNI,Cod_habitacion,Precio) VALUES ('"+entrada+"','"+salida+"','"+Cod_alojamiento+"','"+DNI+"','"+Cod_habitacion+"','"+Precio+"')");      
+                st.executeUpdate("INSERT INTO reserva ( Fecha_entrada, Fecha_salida,  DNI,Precio) VALUES ('"+entrada+"','"+salida+"','"+DNI+"','"+Precio+"')");      
             }
         }catch (Exception e){ 
             System.err.println("Hubo un Error"); 
             System.err.println(e.getMessage()); 
         } 
     }   
+     
+     public void Reservar_apartamento(int cod_reserva,String cod_apartamento)
+    {
+        try 
+        {  
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");        
+            }else {
+                Statement st = reg.createStatement(); 
+                st.executeUpdate("INSERT INTO reserva_apartamento (Cod_reserva, Cod_apartamento) VALUES ('"+cod_reserva+"','"+cod_apartamento+"')");      
+            }
+        }catch (Exception e){ 
+            System.err.println("Hubo un Error"); 
+            System.err.println(e.getMessage()); 
+        } 
+    }   
+     
+     public void Reservar_casa(int cod_reserva,String cod_casa)
+    {
+        try 
+        {  
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");        
+            }else {
+                Statement st = reg.createStatement(); 
+                st.executeUpdate("INSERT INTO reserva_casa (Cod_reserva, Cod_casa) VALUES ('"+cod_reserva+"','"+cod_casa+"')"); 
+            }
+        }catch (Exception e){ 
+            System.err.println("Hubo un Error"); 
+            System.err.println(e.getMessage()); 
+        } 
+    }   
+    
+    
+     public  ResultSet obtener_cod_reserva()
+    {         
+        try
+        {
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+                return null;
+            }else{
+                  String query="Select Cod_reserva AS codigo from reserva order by cod_reserva DESC Limit 1";
+                Statement sentencia = reg.createStatement(); 
+                ResultSet resultado=sentencia.executeQuery(query); 
+                return resultado;
+            }
+        }catch (SQLException ex) 
+        {
+            System.err.println("Hubo un Error ");
+            return null;
+        }          
+    }
+    
+     public void Reservar_hotel(int cod_reserva,String cod_hotel,String cod_habitacion)
+    {
+        try 
+        {  
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");        
+            }else {
+                Statement st = reg.createStatement(); 
+                 st.executeUpdate("INSERT INTO reserva_hotel_habitacion (Cod_reserva, Cod_hotel,Cod_habitacion_hotel) VALUES ('"+cod_reserva+"','"+cod_hotel+"','"+cod_habitacion+"')"); 
+            }
+        }catch (Exception e){ 
+            System.err.println("Hubo un Error"); 
+            System.err.println(e.getMessage()); 
+        } 
+    } 
+    
+    
+    
+    
+    
+    
+     
     
     public void InsertarReservaCasaApartamento(String entrada,String salida,String Cod_alojamiento,String DNI,double Precio)
     {
