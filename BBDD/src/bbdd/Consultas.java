@@ -543,7 +543,7 @@ public class Consultas {
                 System.out.println("Sesion terminada");
                 return null;
             }else{
-                String query="SELECT IFNULL(count(Cod_promocion),0), Valor FROM promocion WHERE DNI like '"+dni+"' and Cod_promocion like '"+codigo+"'";
+                String query="SELECT IFNULL(count(Cod_promocion),0) AS cantidad, Valor FROM promocion WHERE DNI like '"+dni+"' and Cod_promocion like "+codigo+"";
                 Statement sentencia= reg.createStatement();
                 ResultSet resultado=sentencia.executeQuery(query);
                 return resultado;   
