@@ -119,7 +119,9 @@ public class Consultas {
                 System.out.println("Sesion terminada");
                 return null;
             }else{
-                 String query="SELECT habitacion.Tipo,habitacion.Descripcion FROM habitacion INNER JOIN casa ON habitacion.Cod_casa=casa.Cod_casa WHERE casa.Nombre = '"+nombre_casa+"'";
+                System.out.println("-----------"+nombre_casa);
+              String query=  "SELECT habitacion.Tipo ,habitacion.Descripcion  FROM habitacion INNER JOIN casa ON habitacion.Cod_casa=casa.Cod_casa where casa.Nombre ='"+nombre_casa+"'";
+            
                 Statement sentencia = reg.createStatement(); 
                 ResultSet resultado=sentencia.executeQuery(query); 
                 return resultado;   
@@ -140,7 +142,8 @@ public class Consultas {
                 System.out.println("Sesion terminada");
                 return null;
             }else{
-                 String query="SELECT habitacion.Tipo,habitacion.Descripcion FROM habitacion INNER JOIN apartamento ON apartamento.Cod_apartamento = habitacion.Cod_apartamento WHERE apartamento.Nombre = '"+nombre_apartamento+"'";
+                System.out.println("-----------"+nombre_apartamento);
+                 String query="SELECT habitacion.Tipo AS tipito,habitacion.Descripcion AS Descri FROM habitacion INNER JOIN apartamento ON apartamento.Cod_apartamento = habitacion.Cod_apartamento WHERE apartamento.Nombre='"+nombre_apartamento+"'";
                 Statement sentencia = reg.createStatement(); 
                 ResultSet resultado=sentencia.executeQuery(query); 
                 return resultado;   
@@ -174,7 +177,47 @@ public class Consultas {
         }          
     } 
       
-      
+      public  ResultSet PrecioApartamento(String localidad) 
+    {
+        try 
+        {
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+                return null;
+            }else{
+                String query="SELECT  apartamento.Precio FROM apartamento WHERE apartamento.Nombre like '"+localidad+"'";
+                Statement sentencia= reg.createStatement();
+                ResultSet resultado=sentencia.executeQuery(query);
+                return resultado;   
+            }                         
+        }catch (Exception e) 
+        { 
+            System.err.println(e.getMessage());
+        }
+       return null;
+    }
+    
+    public  ResultSet PrecioCasa(String localidad) 
+    {
+        try 
+        {
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+                return null;
+            }else{
+            String query="SELECT  casa.Precio FROM casa WHERE casa.Nombre like '"+localidad+"'";
+                Statement sentencia= reg.createStatement();
+                ResultSet resultado=sentencia.executeQuery(query);
+                return resultado;   
+            }                         
+        }catch (Exception e) 
+        { 
+            System.err.println(e.getMessage());
+        }
+       return null;
+    } 
       /*Nuevas migraciones Africanas*/
       
     public void InsertarReservaHotel(String entrada,String salida,String Cod_alojamiento,String DNI,String Cod_habitacion,double Precio)
@@ -399,26 +442,7 @@ public class Consultas {
        return null;
     }
     
-    public  ResultSet PrecioCasaApartamento(String localidad) 
-    {
-        try 
-        {
-            if(reg.isClosed())
-            {
-                System.out.println("Sesion terminada");
-                return null;
-            }else{
-                String query="SELECT COUNT(habitacion.Cod_habitacion) as numeroHab, habitacion.Precio FROM habitacion INNER JOIN alojamiento ON alojamiento.Cod_alojamiento = habitacion.Cod_alojamiento  WHERE alojamiento.Nombre like '"+localidad+"'";
-                Statement sentencia= reg.createStatement();
-                ResultSet resultado=sentencia.executeQuery(query);
-                return resultado;   
-            }                         
-        }catch (Exception e) 
-        { 
-            System.err.println(e.getMessage());
-        }
-       return null;
-    }
+   
     
     public  ResultSet ObtenerReserva(String dni) 
     {
