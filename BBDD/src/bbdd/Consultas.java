@@ -120,10 +120,10 @@ public class Consultas {
                 return null;
             }else{
                 System.out.println("-----------"+nombre_casa);
-              String query=  "SELECT habitacion.Tipo ,habitacion.Descripcion  FROM habitacion INNER JOIN casa ON habitacion.Cod_casa=casa.Cod_casa where casa.Nombre ='"+nombre_casa+"'";
-            
+             String query="SELECT habitacion.Tipo ,habitacion.Descripcion FROM habitacion INNER JOIN casa ON casa.Cod_casa = habitacion.Cod_casa WHERE casa.Nombre='"+nombre_casa+"'";
                 Statement sentencia = reg.createStatement(); 
                 ResultSet resultado=sentencia.executeQuery(query); 
+                
                 return resultado;   
             }
         }catch (SQLException ex) 
@@ -143,14 +143,14 @@ public class Consultas {
                 return null;
             }else{
                 System.out.println("-----------"+nombre_apartamento);
-                 String query="SELECT habitacion.Tipo AS tipito,habitacion.Descripcion AS Descri FROM habitacion INNER JOIN apartamento ON apartamento.Cod_apartamento = habitacion.Cod_apartamento WHERE apartamento.Nombre='"+nombre_apartamento+"'";
+                 String query="SELECT habitacion.Tipo ,habitacion.Descripcion FROM habitacion INNER JOIN apartamento ON apartamento.Cod_apartamento = habitacion.Cod_apartamento WHERE apartamento.Nombre='"+nombre_apartamento+"'";
                 Statement sentencia = reg.createStatement(); 
                 ResultSet resultado=sentencia.executeQuery(query); 
                 return resultado;   
             }
         }catch (SQLException ex) 
         {
-            System.err.println("Hubo un Error_2 ");
+            System.err.println("Hubo un Error_3 ");
             return null;
         }          
     }  
@@ -271,7 +271,7 @@ public class Consultas {
         } 
     } 
 
-    public  ResultSet alojamiento_para_reservar(String Nombre)
+    public  ResultSet hotel_para_reservar(String Nombre)
     {         
         try
         {
@@ -280,7 +280,7 @@ public class Consultas {
                 System.out.println("Sesion terminada");
                 return null;
             }else{
-                  String query="SELECT alojamiento.Cod_alojamiento as codigo from alojamiento where alojamiento.Nombre like '"+Nombre+"'";
+                  String query="SELECT hotel.Cod_hotel as codigo from hotel where hotel.Nombre like '"+Nombre+"'";
                 Statement sentencia = reg.createStatement(); 
                 ResultSet resultado=sentencia.executeQuery(query); 
                 return resultado;
@@ -292,7 +292,46 @@ public class Consultas {
         }          
     } 
     
-        
+        public  ResultSet casa_para_reservar(String Nombre)
+    {         
+        try
+        {
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+                return null;
+            }else{
+                  String query="SELECT casa.Cod_casa as codigo from casa where casa.Nombre like '"+Nombre+"'";
+                Statement sentencia = reg.createStatement(); 
+                ResultSet resultado=sentencia.executeQuery(query); 
+                return resultado;
+            }
+        }catch (SQLException ex) 
+        {
+            System.err.println("Hubo un Error ");
+            return null;
+        }          
+    }
+            public  ResultSet apartamento_para_reservar(String Nombre)
+    {         
+        try
+        {
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+                return null;
+            }else{
+                  String query="SELECT apartamento.Cod_apartamento as codigo from apartamento where apartamento.Nombre like '"+Nombre+"'";
+                Statement sentencia = reg.createStatement(); 
+                ResultSet resultado=sentencia.executeQuery(query); 
+                return resultado;
+            }
+        }catch (SQLException ex) 
+        {
+            System.err.println("Hubo un Error ");
+            return null;
+        }          
+    }
   
    
     
