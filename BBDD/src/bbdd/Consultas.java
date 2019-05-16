@@ -419,7 +419,11 @@ public class Consultas {
                 System.out.println("Sesion terminada");
             }else{
                 Statement st = reg.createStatement();
-                st.executeUpdate("DELETE from usuario where DNI='"+us+"'");                 
+                   st.executeUpdate("DELETE from reserva_hotel_habitacion where reserva_hotel_habitacion.Cod_reserva in( SELECT reserva.Cod_reserva FROM `reserva` WHERE reserva.DNI='"+us+"') ");   
+                   st.executeUpdate("DELETE from reserva_casa where reserva_casa.Cod_reserva in( SELECT reserva.Cod_reserva FROM `reserva` WHERE reserva.DNI='"+us+"') ");   
+                   st.executeUpdate("DELETE from reserva_apartamento where reserva_apartamento.Cod_reserva in( SELECT reserva.Cod_reserva FROM `reserva` WHERE reserva.DNI='"+us+"')");   
+                st.executeUpdate("DELETE from usuario where DNI='"+us+"'");              
+                 st.executeUpdate("DELETE from reserva where DNI='"+us+"'");     
             }
         }catch (Exception e) { 
             System.err.println(e.getMessage()); 
@@ -435,7 +439,10 @@ public class Consultas {
                 System.out.println("Sesion terminada");
             }else{
                 Statement st = reg.createStatement();
-                st.executeUpdate("DELETE from reserva where DNI='"+us+"'");                 
+                 st.executeUpdate("DELETE from reserva_hotel_habitacion where reserva_hotel_habitacion.Cod_reserva in( SELECT reserva.Cod_reserva FROM `reserva` WHERE reserva.DNI='"+us+"') ");   
+                  st.executeUpdate("DELETE from reserva_casa where reserva_casa.Cod_reserva in( SELECT reserva.Cod_reserva FROM `reserva` WHERE reserva.DNI='"+us+"') ");   
+                   st.executeUpdate("DELETE from reserva_apartamento where reserva_apartamento.Cod_reserva in( SELECT reserva.Cod_reserva FROM `reserva` WHERE reserva.DNI='"+us+"')");     
+                 st.executeUpdate("DELETE from reserva where DNI='"+us+"'");                 
             }
         }catch (Exception e) { 
             System.err.println(e.getMessage()); 
