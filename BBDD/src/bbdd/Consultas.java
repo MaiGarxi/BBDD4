@@ -559,4 +559,25 @@ public class Consultas {
         }
        return null;
     }
+    
+    public  ResultSet Estrellas(String localidad) 
+    {
+        try 
+        {
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+                return null;
+            }else{
+                String query="";
+                Statement sentencia= reg.createStatement();
+                ResultSet resultado=sentencia.executeQuery(query);
+                return resultado;   
+            }                         
+        }catch (Exception e) 
+        { 
+            System.err.println(e.getMessage());
+        }
+       return null;
+    }
 }
