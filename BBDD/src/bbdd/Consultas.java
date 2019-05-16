@@ -1,5 +1,6 @@
 package bbdd;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -182,10 +183,10 @@ public class Consultas {
                 System.out.println("Sesion terminada");
                 return null;
             }else{
-                String query="SELECT  apartamento.Precio FROM apartamento WHERE apartamento.Nombre like '"+localidad+"'";
-                Statement sentencia= reg.createStatement();
-                ResultSet resultado=sentencia.executeQuery(query);
-                return resultado;   
+                CallableStatement cst = reg.prepareCall("{call PrecioApartamento ('"+localidad+"')}");
+                cst.execute();
+                final ResultSet resultado = cst.getResultSet(); 
+                return resultado;  
             }                         
         }catch (Exception e) 
         { 
@@ -203,9 +204,9 @@ public class Consultas {
                 System.out.println("Sesion terminada");
                 return null;
             }else{
-                String query="SELECT  casa.Precio FROM casa WHERE casa.Nombre like '"+localidad+"'";
-                Statement sentencia= reg.createStatement();
-                ResultSet resultado=sentencia.executeQuery(query);
+                CallableStatement cst = reg.prepareCall("{call PrecioCasa ('"+localidad+"')}");
+                cst.execute();
+                final ResultSet resultado = cst.getResultSet(); 
                 return resultado;   
             }                         
         }catch (Exception e) 
