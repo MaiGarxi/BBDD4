@@ -29,7 +29,7 @@ public class Consultas {
          return null;
             }
             else{
-                String query="SELECT DISTINCT Localidad from ubicacion order by Localidad ASC";
+                String query="SELECT * FROM `destino`";
                 Statement sentencia = reg.createStatement(); 
                 ResultSet resultado=sentencia.executeQuery(query);     
                 return resultado;
