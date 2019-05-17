@@ -64,6 +64,28 @@ public class Consultas {
             return null;
         }   
     }
+    
+     public ResultSet  Consultahotel_Nombre(String Localidad,int estrellas)
+    {
+         try
+        {
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+                return null;
+            }
+            else{
+           String query=   " SELECT hotel.Nombre AS Nombre, IFNULL(COUNT(reserva_hotel_habitacion.Cod_reserva), 0) AS popularidad FROM hotel LEFT JOIN reserva_hotel_habitacion ON hotel.Cod_hotel = reserva_hotel_habitacion.Cod_hotel LEFT JOIN reserva on reserva.Cod_reserva=reserva_hotel_habitacion.Cod_reserva INNER JOIN ubicacion on hotel.Cod_hotel=ubicacion.Cod_hotel where ubicacion.Localidad='"+Localidad+"' AND hotel.estrellas='"+estrellas+"' GROUP BY hotel.Cod_hotel order by popularidad Desc,hotel.nombre Desc";
+                Statement sentencia = reg.createStatement(); 
+                ResultSet resultado=sentencia.executeQuery(query); 
+                return resultado;
+            }                   
+        }catch (SQLException ex) 
+        {
+            System.err.println("Hubo un Error_2");
+            return null;
+        }   
+    }
    
     public ResultSet  Consultacasa_Nombre(String Localidad,String fecha_inicio,String fecha_fin,int personas)
     {
