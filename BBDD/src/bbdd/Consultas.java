@@ -86,6 +86,46 @@ public class Consultas {
             return null;
         }   
     }
+     
+public ResultSet  Consultahotel_Nombre_servicio(String Localidad,String quer,int estrellas)
+    {
+         try
+        {
+            
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+                return null;
+            }
+            else{
+                String igual="";
+                if(quer.equals(" "))
+                {
+                    
+                }
+                else{
+                 quer="AND ("+quer+")";
+                }
+                if(estrellas==0)
+                {
+                igual=">";
+                }
+                else{
+               igual="=";
+                }
+                
+      String query=   " SELECT hotel.Nombre AS Nombre, IFNULL(COUNT(reserva_hotel_habitacion.Cod_reserva), 0) AS popularidad FROM hotel LEFT JOIN reserva_hotel_habitacion ON hotel.Cod_hotel = reserva_hotel_habitacion.Cod_hotel LEFT JOIN reserva on reserva.Cod_reserva=reserva_hotel_habitacion.Cod_reserva INNER JOIN ubicacion on hotel.Cod_hotel=ubicacion.Cod_hotel LEFT JOIN hotel_servicio on hotel_servicio.Cod_hotel=hotel.Cod_hotel where ubicacion.Localidad='"+Localidad+"' AND hotel.estrellas"+igual+"'"+estrellas+"'   "+quer+"  GROUP BY hotel.Cod_hotel order by popularidad Desc,hotel.nombre Desc";
+                System.out.println(query);
+                Statement sentencia = reg.createStatement(); 
+                ResultSet resultado=sentencia.executeQuery(query); 
+                return resultado;
+            }                   
+        }catch (SQLException ex) 
+        {
+            System.err.println("Hubo un Error_2");
+            return null;
+        }   
+    }
    
     public ResultSet  Consultacasa_Nombre(String Localidad,String fecha_inicio,String fecha_fin,int personas)
     {
@@ -97,6 +137,7 @@ public class Consultas {
                 return null;
             }
             else{
+                
                 String query="SELECT casa.Cod_casa, casa.Nombre, casa.Capacidad,IFNULL(COUNT(reserva_casa.Cod_reserva), 0) AS popularidad FROM casa LEFT join reserva_casa on casa.Cod_casa=reserva_casa.Cod_casa left join reserva on reserva.Cod_reserva=reserva_casa.Cod_reserva inner join ubicacion on casa.Cod_casa=ubicacion.Cod_casa where casa.Cod_casa not in( SELECT DISTINCT reserva_casa.Cod_casa FROM reserva_casa INNER join reserva on reserva_casa.Cod_reserva=reserva.Cod_reserva WHERE '"+fecha_inicio+"' BETWEEN reserva.Fecha_entrada AND reserva.Fecha_salida OR '"+fecha_fin+"' BETWEEN reserva.Fecha_entrada AND reserva.Fecha_salida ) AND ubicacion.Localidad='"+Localidad+"' AND casa.Capacidad>= '"+personas+"' GROUP BY casa.Cod_casa order by popularidad Desc,casa.nombre Desc ";
                 Statement sentencia = reg.createStatement(); 
                 ResultSet resultado=sentencia.executeQuery(query); 
@@ -109,6 +150,35 @@ public class Consultas {
         }   
     }
    
+       public ResultSet  Consultacasa_Nombre_servicio(String Localidad,String fecha_inicio,String fecha_fin,int personas,String quer)
+    {
+         try
+        {
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+                return null;
+            }
+            else{
+                  if(quer.equals(" "))
+                {
+                    
+                }
+                else{
+                 quer="AND ("+quer+")";
+                }
+                String query="SELECT casa.Cod_casa, casa.Nombre, casa.Capacidad,IFNULL(COUNT(reserva_casa.Cod_reserva), 0) AS popularidad FROM casa LEFT join reserva_casa on casa.Cod_casa=reserva_casa.Cod_casa left join reserva on reserva.Cod_reserva=reserva_casa.Cod_reserva inner join ubicacion on casa.Cod_casa=ubicacion.Cod_casa LEFT JOIN casa_servicio on casa_servicio.Cod_casa=casa.Cod_casa where casa.Cod_casa not in( SELECT DISTINCT reserva_casa.Cod_casa FROM reserva_casa INNER join reserva on reserva_casa.Cod_reserva=reserva.Cod_reserva WHERE '"+fecha_inicio+"' BETWEEN reserva.Fecha_entrada AND reserva.Fecha_salida OR '"+fecha_fin+"' BETWEEN reserva.Fecha_entrada AND reserva.Fecha_salida ) AND ubicacion.Localidad='"+Localidad+"' AND casa.Capacidad>= '"+personas+"'  "+quer+"  GROUP BY casa.Cod_casa order by popularidad Desc,casa.nombre Desc ";
+                Statement sentencia = reg.createStatement(); 
+                ResultSet resultado=sentencia.executeQuery(query); 
+                return resultado;
+            }                   
+        }catch (SQLException ex) 
+        {
+            System.err.println("Hubo un Error_2");
+            return null;
+        }   
+    }
+    
     public ResultSet  Consulta_apartamento_Nombre(String Localidad,String fecha_inicio,String fecha_fin,int personas)
     {
          try
@@ -120,6 +190,36 @@ public class Consultas {
             }
             else{
                 String query="SELECT apartamento.Cod_apartamento, apartamento.Nombre, apartamento.Capacidad,IFNULL(COUNT(reserva_apartamento.Cod_reserva), 0) AS popularidad FROM apartamento LEFT join reserva_apartamento on apartamento.Cod_apartamento=reserva_apartamento.Cod_apartamento left join reserva on reserva.Cod_reserva=reserva_apartamento.Cod_reserva inner join ubicacion on apartamento.Cod_apartamento=ubicacion.Cod_apartamento where apartamento.Cod_apartamento not in( SELECT DISTINCT reserva_apartamento.Cod_apartamento FROM reserva_apartamento INNER join reserva on reserva_apartamento.Cod_reserva=reserva.Cod_reserva WHERE '"+fecha_inicio+"' BETWEEN reserva.Fecha_entrada AND reserva.Fecha_salida OR '"+fecha_fin+"' BETWEEN reserva.Fecha_entrada AND reserva.Fecha_salida ) AND ubicacion.Localidad='"+Localidad+"' AND apartamento.Capacidad>= '"+personas+"' GROUP BY apartamento.Cod_apartamento order by popularidad Desc,apartamento.nombre Desc ";
+                Statement sentencia = reg.createStatement(); 
+                ResultSet resultado=sentencia.executeQuery(query); 
+                return resultado;
+            }                   
+        }catch (SQLException ex) 
+        {
+            System.err.println("Hubo un Error_2");
+            return null;
+        }   
+    }
+    
+       public ResultSet  Consulta_apartamento_Nombre_servicio(String Localidad,String fecha_inicio,String fecha_fin,int personas,String quer)
+    {
+         try
+        {
+            if(reg.isClosed())
+            {
+                System.out.println("Sesion terminada");
+                return null;
+            }
+            else{
+                  if(quer.equals(" "))
+                {
+                    
+                }
+                else{
+                 quer="AND ("+quer+")";
+                }
+                  
+                String query="SELECT apartamento.Cod_apartamento, apartamento.Nombre, apartamento.Capacidad,IFNULL(COUNT(reserva_apartamento.Cod_reserva), 0) AS popularidad FROM apartamento LEFT join reserva_apartamento on apartamento.Cod_apartamento=reserva_apartamento.Cod_apartamento left join reserva on reserva.Cod_reserva=reserva_apartamento.Cod_reserva inner join ubicacion on apartamento.Cod_apartamento=ubicacion.Cod_apartamento LEFT JOIN apartamento_servicio on apartamento_servicio.Cod_apartamento=apartamento.Cod_apartamento where apartamento.Cod_apartamento not in( SELECT DISTINCT reserva_apartamento.Cod_apartamento FROM reserva_apartamento INNER join reserva on reserva_apartamento.Cod_reserva=reserva.Cod_reserva WHERE '"+fecha_inicio+"' BETWEEN reserva.Fecha_entrada AND reserva.Fecha_salida OR '"+fecha_fin+"' BETWEEN reserva.Fecha_entrada AND reserva.Fecha_salida ) AND ubicacion.Localidad='"+Localidad+"' AND apartamento.Capacidad>= '"+personas+"'  "+quer+"  GROUP BY apartamento.Cod_apartamento order by popularidad Desc,apartamento.nombre Desc ";
                 Statement sentencia = reg.createStatement(); 
                 ResultSet resultado=sentencia.executeQuery(query); 
                 return resultado;
